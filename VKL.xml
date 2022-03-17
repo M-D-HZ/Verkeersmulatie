@@ -1,0 +1,7 @@
+<?xml version="1.0" ?>
+
+<VERKEERSLICHT>
+    <baan>Middelheimlaan</baan>
+    <positie>400</positie>
+    <cyclus>20</cyclus>
+</VERKEERSLICHT>
