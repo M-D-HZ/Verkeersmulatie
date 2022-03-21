@@ -28,10 +28,6 @@ void Voertuig::setSnelheid(double speed) {
     Voertuig::snelheid = speed;
 }
 
-void Voertuig::UpdatePosition() {
-
-}
-
 int Voertuig::getLengte() const {
     return lengte;
 }

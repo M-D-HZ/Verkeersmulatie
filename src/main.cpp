@@ -13,6 +13,8 @@ int main() {
     for (unsigned int i = 0; i < verkeer.GetBanen().size(); ++i) {
         while (!verkeer.GetBanen()[i].getVoertuigen().empty()){
             verkeer.GetBanen()[i].PrintVoertuigen();
+            verkeer.GetBanen()[i].BerekenSnelheid();
+            verkeer.GetBanen()[i].BerekenVersnelling();
         }
     }
 }

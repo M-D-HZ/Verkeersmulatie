@@ -21,12 +21,10 @@ public:
     double getVersnelling() const;
 
     void setVersnelling(double versnelling);
-
     int getLengte() const;
     void setLengte(int lengte);
     double getSnelheid() const;
     void setSnelheid(double snelheid);
-    void UpdatePosition();
     Voertuig();
     const string &getBaan();
     int getPositie();
