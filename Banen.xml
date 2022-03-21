@@ -16,11 +16,11 @@
 </VERKEERSLICHT>
 <VOERTUIG>
     <baan>Middelheimlaan</baan>
-    <positie>20</positie>
+    <positie>40</positie>
 </VOERTUIG>
 <VOERTUIG>
     <baan>Middelheimlaan</baan>
-    <positie>40</positie>
+    <positie>20</positie>
 </VOERTUIG>
 </ROOT>
 

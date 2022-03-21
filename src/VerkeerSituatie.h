@@ -20,7 +20,7 @@ public:
     int getSimulatieTijd() const;
 
     void setSimulatieTijd(int simulatieTijd);
-
+    void UpdateBanen(vector<Baan> baan);
     void addBaan(Baan weg);
     vector<Baan> GetBanen();
     void read(const char *fileName, VerkeerSituatie &verk);

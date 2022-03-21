@@ -2,7 +2,7 @@
 //        Student 2: X Tenzin Choezin - s0202163
 
 #include "Voertuig.h"
-Voertuig::Voertuig() {}
+
 
 const string &Voertuig::getBaan() {
     return baan;
@@ -41,6 +41,11 @@ double Voertuig::getVersnelling() const {
 }
 
 void Voertuig::setVersnelling(double versnel) {
-    Voertuig::versnelling = versnel;
+    versnelling = versnel;
+}
+
+Voertuig::Voertuig(int lengte) : lengte(lengte) {
+    snelheid = 0;
+    versnelling = 0;
 }
 

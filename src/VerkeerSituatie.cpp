@@ -70,7 +70,7 @@ void VerkeerSituatie::read(const char *fileName, VerkeerSituatie& verk) {
             }
         }
         else if (elemName == "VOERTUIG") {
-            Voertuig* TruckSan = new Voertuig;
+            Voertuig* TruckSan = new Voertuig(4);
             for (TiXmlElement *elemto = elem->FirstChildElement(); elemto != NULL; elemto = elemto->NextSiblingElement()) {
                 string elemNameto = elemto->Value();
                 if (elemNameto == "baan") {
@@ -105,6 +105,12 @@ int VerkeerSituatie::getSimulatieTijd() const {
 void VerkeerSituatie::setSimulatieTijd(int simulatieTijd) {
     Tijdstip = simulatieTijd;
 }
+
+void VerkeerSituatie::UpdateBanen(vector<Baan> ways) {
+    Banen = ways;
+}
+
+
 
 
 

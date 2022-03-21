@@ -10,11 +10,14 @@ using namespace std;
 int main() {
     VerkeerSituatie verkeer;
     verkeer.read("Banen.xml", verkeer);
-    for (unsigned int i = 0; i < verkeer.GetBanen().size(); ++i) {
-        while (!verkeer.GetBanen()[i].getVoertuigen().empty()){
-            verkeer.GetBanen()[i].PrintVoertuigen();
-            verkeer.GetBanen()[i].BerekenSnelheid();
-            verkeer.GetBanen()[i].BerekenVersnelling();
+    vector<Baan> banen = verkeer.GetBanen();
+    for (unsigned int i = 0; i < banen.size(); ++i) {
+        while (!banen[i].getVoertuigen().empty()){
+            banen[i].PrintVoertuigen();
+            banen[i].BerekenVersnelling();
+            banen[i].BerekenSnelheid();
+            verkeer.UpdateBanen(banen);
         }
+
     }
 }

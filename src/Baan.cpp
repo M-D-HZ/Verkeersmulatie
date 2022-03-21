@@ -66,6 +66,7 @@ void Baan::PrintVoertuigen() {
         cout << "Baan: "<< Voertuigen[i].getBaan() << endl;
         cout << "Positie: "<< Voertuigen[i].getPositie() << endl;
         cout << "Snelheid: " << Voertuigen[i].getSnelheid() << endl;
+        cout << "Versnelling: " <<  Voertuigen[i].getVersnelling()<<endl;
     }
 }
 
@@ -74,29 +75,35 @@ void Baan::BerekenVersnelling() {
     double snelheidsverchil;
     double delta;
     double max = 0;
-    for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; ++i) {
-        volgafstand = Voertuigen[i-1].getPositie() - Voertuigen[i].getPositie() - Voertuigen[i-1].getLengte();
-        snelheidsverchil = Voertuigen[i].getSnelheid() - Voertuigen[i-1].getSnelheid();
-        if (0 < (Voertuigen[i].getSnelheid()+((Voertuigen[i].getSnelheid()*snelheidsverchil)/2*sqrt(1.44*4.61)))){
-            max = Voertuigen[i].getSnelheid()+((Voertuigen[i].getSnelheid()*snelheidsverchil)/2*sqrt(1.44*4.61));
+    for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; i++) {
+        if (i == 0){
+            Voertuigen[i].setVersnelling(1.44 * (1-pow(Voertuigen[i].getVersnelling()/16.6,4))- pow(0,2));
+            continue;
         }
-        delta = (4 + max)/volgafstand;
-        Voertuigen[i].setVersnelling(delta);
+        else{
+            volgafstand = Voertuigen[i-1].getPositie() - Voertuigen[i].getPositie() - Voertuigen[i-1].getLengte();
+            snelheidsverchil = Voertuigen[i].getSnelheid() - Voertuigen[i-1].getSnelheid();
+            if (0 < (Voertuigen[i].getSnelheid()+((Voertuigen[i].getSnelheid()*snelheidsverchil)/2*sqrt(1.44*4.61)))){
+                max = Voertuigen[i].getSnelheid()+((Voertuigen[i].getSnelheid()*snelheidsverchil)/2*sqrt(1.44*4.61));
+            }
+            delta = (4 + max)/volgafstand;
+            Voertuigen[i].setVersnelling(1.44 * (1-pow(Voertuigen[i].getVersnelling()/16.6,4))- pow(delta,2));
+        }
     }
 }
 
 void Baan::BerekenSnelheid() {
-    double simulatietijd = 0.0166;
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; ++i) {
         if (Voertuigen[i].getPositie() > this->lengte){
-            // erase voertuig
+            Voertuigen.erase(Voertuigen.begin());
         }
-        if (Voertuigen[i].getSnelheid() + (Voertuigen[i].getVersnelling()*simulatietijd) < 0){
+        else if (Voertuigen[i].getSnelheid() + (Voertuigen[i].getVersnelling()*0.0166) < 0){
             Voertuigen[i].setPositie(Voertuigen[i].getPositie()-(pow(Voertuigen[i].getSnelheid(),2)/2*Voertuigen[i].getVersnelling()));
+            Voertuigen[i].setSnelheid(0);
         }
         else{
-            Voertuigen[i].setSnelheid(Voertuigen[i].getSnelheid() + (Voertuigen[i].getVersnelling()*simulatietijd));
-            Voertuigen[i].setPositie(Voertuigen[i].getPositie() + (Voertuigen[i].getSnelheid()*simulatietijd) + Voertuigen[i].getVersnelling() * (pow(simulatietijd,2)/2));
+            Voertuigen[i].setSnelheid(Voertuigen[i].getSnelheid() + (Voertuigen[i].getVersnelling()*0.0166));
+            Voertuigen[i].setPositie(Voertuigen[i].getPositie() + (Voertuigen[i].getSnelheid()*0.0166) + Voertuigen[i].getVersnelling() * (pow(0.0166,2)/2));
         }
     }
 }

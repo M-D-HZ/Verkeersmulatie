@@ -18,14 +18,13 @@ private:
     double snelheid;
     double versnelling;
 public:
+    Voertuig(int lengte);
     double getVersnelling() const;
-
     void setVersnelling(double versnelling);
     int getLengte() const;
     void setLengte(int lengte);
     double getSnelheid() const;
     void setSnelheid(double snelheid);
-    Voertuig();
     const string &getBaan();
     int getPositie();
     void setBaan(string const &name);
