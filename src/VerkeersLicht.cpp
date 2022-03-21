@@ -12,11 +12,11 @@ void VerkeersLicht::setBaan(const string &bane) {
     VerkeersLicht::baan = bane;
 }
 
-int VerkeersLicht::getPositie() const {
+double VerkeersLicht::getPositie() const {
     return positie;
 }
 
-void VerkeersLicht::setPositie(int position) {
+void VerkeersLicht::setPositie(double position) {
     VerkeersLicht::positie = position;
 }
 

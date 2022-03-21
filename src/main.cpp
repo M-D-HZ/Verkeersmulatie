@@ -12,10 +12,27 @@ int main() {
     verkeer.read("Banen.xml", verkeer);
     vector<Baan> banen = verkeer.GetBanen();
     for (unsigned int i = 0; i < banen.size(); ++i) {
+        // reduce cyclus, getcyclus, switchlights
+        vector<VerkeersLicht> lights = banen[i].getVerkeerslichten();
         while (!banen[i].getVoertuigen().empty()){
+            for (unsigned int j = 0; j < lights.size(); j++) {
+                lights[j].reduce();
+                if(lights[j].getColor() == "red"){
+                    cout << "light has turned red" << endl;
+                    banen[i].BerekenVersnellingRood(lights[j].getPositie());
+                    banen[i].BerekenSnelheid();
+                    verkeer.UpdateBanen(banen);
+                }
+                else{
+                    banen[i].BerekenVersnellingGroen();
+                    banen[i].BerekenSnelheid();
+                    verkeer.UpdateBanen(banen);
+                }
+            }
+
             banen[i].PrintVoertuigen();
-            banen[i].BerekenVersnelling();
-            banen[i].BerekenSnelheid();
+//            banen[i].BerekenVersnellingGroen();
+//            banen[i].BerekenSnelheid();
             verkeer.UpdateBanen(banen);
         }
 

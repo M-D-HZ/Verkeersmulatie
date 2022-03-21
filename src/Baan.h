@@ -16,9 +16,9 @@ private:
     int lengte;
     vector<VerkeersLicht> Verkeerslichten;
     vector<Voertuig> Voertuigen;
+
 public:
     Baan();
-
     const vector<VerkeersLicht> &getVerkeerslichten() const;
     const vector<Voertuig> &getVoertuigen() const;
     const string &getNaam() const;
@@ -29,7 +29,8 @@ public:
     void setVoertuig(Voertuig* motor);
     void PrintVoertuigen();
     void BerekenSnelheid();
-    void BerekenVersnelling();
+    void BerekenVersnellingGroen();
+    void BerekenVersnellingRood(double pos);
     bool isEmpty();
 };
 

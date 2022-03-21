@@ -25,7 +25,7 @@ double Voertuig::getSnelheid() const {
 }
 
 void Voertuig::setSnelheid(double speed) {
-    Voertuig::snelheid = speed;
+    snelheid = speed;
 }
 
 int Voertuig::getLengte() const {

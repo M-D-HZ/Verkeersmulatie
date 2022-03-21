@@ -26,9 +26,9 @@ public:
     double getSnelheid() const;
     void setSnelheid(double snelheid);
     const string &getBaan();
-    int getPositie();
+    double getPositie();
     void setBaan(string const &name);
-    void setPositie(int number);
+    void setPositie(double number);
 
 };
 

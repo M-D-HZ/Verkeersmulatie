@@ -70,7 +70,7 @@ void Baan::PrintVoertuigen() {
     }
 }
 
-void Baan::BerekenVersnelling() {
+void Baan::BerekenVersnellingGroen() {
     double volgafstand;
     double snelheidsverchil;
     double delta;
@@ -107,6 +107,7 @@ void Baan::BerekenSnelheid() {
         }
     }
 }
+
 
 
 

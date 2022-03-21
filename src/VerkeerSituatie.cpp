@@ -60,6 +60,7 @@ void VerkeerSituatie::read(const char *fileName, VerkeerSituatie& verk) {
                 }
                 if (elemNameto == "cyclus") {
                     Licht->setCyclus(getal(elemto->GetText()));
+                    Licht->setClone(getal(elemto->GetText()));
                     for (unsigned int i = 0; i < unsigned(verk.Banen.size()); i++) {
                         if (verk.Banen[i].getNaam() == Licht->getBaan()) {
                             verk.Banen[i].setVerkeerslicht(Licht);

@@ -16,13 +16,17 @@ private:
     int positie;
     int cyclus;
 public:
+    VerkeersLicht();
+
     const string &getBaan() const;
 
     void setBaan(const string &baan);
 
-    int getPositie() const;
+    double getPositie() const;
 
-    void setPositie(int positie);
+    void setPositie(double positie);
+
+    void setClone(int clone);
 
     int getCyclus() const;
 
