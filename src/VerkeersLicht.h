@@ -13,8 +13,10 @@ using namespace std;
 class VerkeersLicht{
 private:
     string baan;
-    int positie;
+    double positie;
     int cyclus;
+    int Clone;
+    string Color;
 public:
     VerkeersLicht();
 
@@ -31,6 +33,12 @@ public:
     int getCyclus() const;
 
     void setCyclus(int cyclus);
+
+    void reduce();
+
+    void switchColor();
+
+    string getColor();
 
 };
 

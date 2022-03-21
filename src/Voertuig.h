@@ -13,7 +13,7 @@ using namespace std;
 class Voertuig{
 private:
     string baan;
-    int positie;
+    double positie;
     int lengte;
     double snelheid;
     double versnelling;

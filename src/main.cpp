@@ -35,6 +35,5 @@ int main() {
 //            banen[i].BerekenSnelheid();
             verkeer.UpdateBanen(banen);
         }
-
     }
 }
