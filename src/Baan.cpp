@@ -104,7 +104,7 @@ void Baan::setVoertuig(Voertuig* motor) {
 // ADDED FUNCTIONS
 void Baan::PrintVoertuigen() {
     REQUIRE(this->properlyInit(), "Not properly initialized");
-    REQUIRE(!this->Voertuigen.empty(), "Not properly initialized");
+    REQUIRE(!this->Voertuigen.empty(), "Nothing to print");
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; ++i) {
         cout << "Baan: "<< Voertuigen[i]->getBaan() << endl;
         cout << "---> Positie: "<< Voertuigen[i]->getPositie() << endl;
@@ -119,8 +119,7 @@ void Baan::BerekenVersnellingGroen(bool slowdown) {
     double snelheidsverchil = 0;
     double delta = 0;
     double max = 0;
-    double pos = 400;
-//    double temps;
+    double pos = 500;
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; i++) {
         volgafstand = pos - Voertuigen[i]->getPositie();
         if(slowdown && i == 0 && volgafstand < 15){
@@ -129,8 +128,9 @@ void Baan::BerekenVersnellingGroen(bool slowdown) {
             Voertuigen[i]->setVersnelling(hel);
             ENSURE(Voertuigen[i]->getVersnelling() < 0,"Het moet vertragen");
         }
-
-        if (slowdown && i == 0 && volgafstand < 50){
+        else if (slowdown && i == 0 && volgafstand < 50){
+            cout << "!!--> RED LIGHT <--!!" << endl;
+            double k = Voertuigen[i]->getVersnelling();
             Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/vmax,4)));
             continue;
         }
@@ -160,7 +160,6 @@ void Baan::BerekenVersnellingGroen(bool slowdown) {
                 Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/Vmax,4) - pow(delta,2)));
 //            ENSURE(Voertuigen[i]->getVersnelling() > 0,"Het moet versnellen");
             }
-
         }
     }
 }
@@ -173,17 +172,20 @@ void Baan::BerekenSnelheid() {
             Voertuigen.erase(Voertuigen.begin());
         }
         else if (Voertuigen[i]->getSnelheid() + (Voertuigen[i]->getVersnelling()*simTime) < 0){
+            double check = Voertuigen[i]->getPositie()-(pow(Voertuigen[i]->getSnelheid(),2)/(2*Voertuigen[i]->getVersnelling()));
             Voertuigen[i]->setPositie(Voertuigen[i]->getPositie()-(pow(Voertuigen[i]->getSnelheid(),2)/(2*Voertuigen[i]->getVersnelling())));
+            ENSURE(Voertuigen[i]->getPositie() == check, "Failed assertion");
         }
         else if (Voertuigen[i]->getSnelheid() + (Voertuigen[i]->getVersnelling()*simTime) <= Vmax){
             Voertuigen[i]->setSnelheid(Voertuigen[i]->getSnelheid() + (Voertuigen[i]->getVersnelling()*simTime));
             double even = Voertuigen[i]->getPositie() + (Voertuigen[i]->getSnelheid()*simTime) + (Voertuigen[i]->getVersnelling() * (pow(simTime,2)/2));
             Voertuigen[i]->setPositie(even);
-//            ENSURE(Voertuigen[i]->getPositie() == even, "Failed assertion");
+            ENSURE(Voertuigen[i]->getPositie() == even, "Failed assertion");
         }
         else{
             double even = Voertuigen[i]->getPositie() + (Voertuigen[i]->getSnelheid()*simTime) + (Voertuigen[i]->getVersnelling() * (pow(simTime,2)/2));
             Voertuigen[i]->setPositie(even);
+            ENSURE(Voertuigen[i]->getPositie() == even, "Failed Assertion");
         }
     }
 }

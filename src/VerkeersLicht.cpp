@@ -4,20 +4,26 @@
 #include "VerkeersLicht.h"
 #include "DesignByContract.h"
 
-
-const string &VerkeersLicht::getBaan() const {
-    return this->baan;
+VerkeersLicht::VerkeersLicht() {
+    Color = "green";
+    positie = 0.0;
+    cyclus = 0;
+    Clone = 0;
+    isThis = this;
 }
-
 bool VerkeersLicht::properlyInitialized(){
     return isThis == this;
+}
+
+const string &VerkeersLicht::getBaan() {
+    return this->baan;
 }
 
 void VerkeersLicht::setBaan(const string &bane) {
     VerkeersLicht::baan = bane;
 }
 
-double VerkeersLicht::getPositie() const {
+double VerkeersLicht::getPositie(){
     return positie;
 }
 
@@ -46,14 +52,6 @@ void VerkeersLicht::reduce(){
     ENSURE(this->getClone() == even-1, "Failed assertion");
 }
 
-VerkeersLicht::VerkeersLicht() {
-    Color = "green";
-    positie = 0.0;
-    cyclus = 0;
-    Clone = 0;
-    isThis = this;
-}
-
 void VerkeersLicht::switchColor() {
     if (this->Color == "green"){
         this->Color = "red";
@@ -63,7 +61,7 @@ void VerkeersLicht::switchColor() {
     }
 }
 
-int VerkeersLicht::getClone() const {
+int VerkeersLicht::getClone(){
     return Clone;
 }
 

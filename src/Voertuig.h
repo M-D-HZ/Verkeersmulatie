@@ -17,20 +17,24 @@ private:
     int lengte;
     double snelheid;
     double versnelling;
+    Voertuig* isThis;
 public:
     // CONSTRUCTORS
     Voertuig(int lengte);
     // GETTERS AND SETTERS
-    double getVersnelling() const;
+    double getVersnelling();
     void setVersnelling(double versnelling);
-    int getLengte() const;
+    int getLengte();
     void setLengte(int lengte);
-    double getSnelheid() const;
+    double getSnelheid();
     void setSnelheid(double snelheid);
     const string &getBaan();
     double getPositie();
     void setBaan(string const &name);
     void setPositie(double number);
+
+    //Properly Initialized
+    bool properlyInitialized();
 
 };
 
