@@ -16,7 +16,9 @@ bool VerkeersLicht::properlyInitialized(){
 }
 
 const string &VerkeersLicht::getBaan() {
-    return this->baan;
+    REQUIRE(this->properlyInitialized(), "Not properly initialized");
+    ENSURE(baan.length() != 0, "Baan naam is leeg");
+    return baan;
 }
 
 void VerkeersLicht::setBaan(const string &bane) {
@@ -24,11 +26,15 @@ void VerkeersLicht::setBaan(const string &bane) {
 }
 
 double VerkeersLicht::getPositie(){
+    REQUIRE(this->properlyInitialized(), "Not properly initialized");
+    ENSURE(positie > 0, "Positie kan niet negatief zijn");
     return positie;
 }
 
 void VerkeersLicht::setPositie(double position) {
+    REQUIRE(this->properlyInitialized(), "Not properly initialized");
     VerkeersLicht::positie = position;
+    ENSURE(this->getPositie() == position, "Failed Assertion");
 }
 
 int VerkeersLicht::getCyclus() const {
@@ -36,7 +42,9 @@ int VerkeersLicht::getCyclus() const {
 }
 
 void VerkeersLicht::setCyclus(int cycl) {
+    REQUIRE(this->properlyInitialized(), "Not properly initialized");
     VerkeersLicht::cyclus = cycl;
+    ENSURE(this->getCyclus() == cycl, "Failed Assertion");
 }
 
 void VerkeersLicht::reduce(){
@@ -53,6 +61,7 @@ void VerkeersLicht::reduce(){
 }
 
 void VerkeersLicht::switchColor() {
+    REQUIRE(this->properlyInitialized(), "Not properly initialized");
     if (this->Color == "green"){
         this->Color = "red";
     }
@@ -62,6 +71,8 @@ void VerkeersLicht::switchColor() {
 }
 
 int VerkeersLicht::getClone(){
+//    REQUIRE(this->properlyInitialized(), "Not properly initialized");
+//    ENSURE(this->getClone() > 0, "Cycle kan niet negatief zijn");
     return Clone;
 }
 

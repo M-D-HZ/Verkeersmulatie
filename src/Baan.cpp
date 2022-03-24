@@ -119,7 +119,7 @@ void Baan::BerekenVersnellingGroen(bool slowdown) {
     double snelheidsverchil = 0;
     double delta = 0;
     double max = 0;
-    double pos = 500;
+    pos = Verkeerslichten[0]->getPositie();
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; i++) {
         volgafstand = pos - Voertuigen[i]->getPositie();
         if(slowdown && i == 0 && volgafstand < 15){

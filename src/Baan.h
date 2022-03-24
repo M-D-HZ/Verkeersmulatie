@@ -23,6 +23,7 @@ private:
     int fmin;
     vector<VerkeersLicht*> Verkeerslichten;
     vector<Voertuig*> Voertuigen;
+    int pos;
 
 public:
     // CONSTRUCTOR
