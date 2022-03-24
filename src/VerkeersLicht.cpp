@@ -48,6 +48,9 @@ void VerkeersLicht::reduce(){
 
 VerkeersLicht::VerkeersLicht() {
     Color = "green";
+    positie = 0.0;
+    cyclus = 0;
+    Clone = 0;
     isThis = this;
 }
 

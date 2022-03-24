@@ -16,7 +16,11 @@ private:
     int lengte;
     double simTime;
     double Vmax;
+    double vmax;
     double vertraagfac;
+    double Amax;
+    double Bmax;
+    int fmin;
     vector<VerkeersLicht*> Verkeerslichten;
     vector<Voertuig*> Voertuigen;
 

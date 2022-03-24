@@ -7,6 +7,7 @@
 Voertuig::Voertuig(int lengte) : lengte(lengte) {
     snelheid = 0;
     versnelling = 0;
+    positie = 0;
 }
 
 // GETTERS AND SETTERS
@@ -14,7 +15,7 @@ const string &Voertuig::getBaan() {
     return baan;
 }
 
-int Voertuig::getPositie() {
+double Voertuig::getPositie() {
     return positie;
 }
 
@@ -22,7 +23,7 @@ void Voertuig::setBaan(const string &name) {
     baan = name;
 }
 
-void Voertuig::setPositie(int number) {
+void Voertuig::setPositie(double number) {
     positie = number;
 }
 

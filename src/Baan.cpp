@@ -14,6 +14,11 @@ Baan::Baan() {
     simTime = 0.0166;
     Vmax = 16.6;
     vertraagfac = 0.4;
+    Amax = 1.44;
+    Bmax = 4.61;
+    fmin = 4;
+    lengte = 0;
+    vmax = vertraagfac*Vmax;
     isThis = this;
 }
 bool Baan::properlyInit(){
@@ -54,10 +59,10 @@ void Baan::setSimTime(double siTime) {
     ENSURE(this->getSimTime() == siTime, "Failed assertion");
 }
 
-void Baan::setVmax(double vmax) {
+void Baan::setVmax(double kvmax) {
     REQUIRE(this->properlyInit(), "Not properly initialized");
-    Vmax = vmax;
-    ENSURE(this->getVmax() == vmax, "Failed assertion");
+    Vmax = kvmax;
+    ENSURE(this->getVmax() == kvmax, "Failed assertion");
 }
 
 void Baan::setLengte(int length) {
@@ -102,9 +107,9 @@ void Baan::PrintVoertuigen() {
     REQUIRE(!this->Voertuigen.empty(), "Not properly initialized");
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; ++i) {
         cout << "Baan: "<< Voertuigen[i]->getBaan() << endl;
-        cout << "Positie: "<< Voertuigen[i]->getPositie() << endl;
-        cout << "Snelheid: " << Voertuigen[i]->getSnelheid() << endl;
-        cout << "Versnelling: " <<  Voertuigen[i]->getVersnelling()<<endl;
+        cout << "---> Positie: "<< Voertuigen[i]->getPositie() << endl;
+        cout << "---> Snelheid: " << Voertuigen[i]->getSnelheid() << endl;
+        cout << "---> Versnelling: " <<  Voertuigen[i]->getVersnelling()<<endl;
     }
 }
 
@@ -114,29 +119,48 @@ void Baan::BerekenVersnellingGroen(bool slowdown) {
     double snelheidsverchil = 0;
     double delta = 0;
     double max = 0;
+    double pos = 400;
+//    double temps;
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; i++) {
-        if (i == 0){
-            Voertuigen[i]->setVersnelling(1.44 * (1-pow(Voertuigen[i]->getVersnelling()/Vmax,4))- pow(delta,2));
-            ENSURE((Voertuigen[i]->getVersnelling() > 0) && (delta ==0),"Het moet versnellen");
+        volgafstand = pos - Voertuigen[i]->getPositie();
+        if(slowdown && i == 0 && volgafstand < 15){
+            cout << "!!--> RED LIGHT <--!!" << endl;
+            double hel = -((Bmax*Voertuigen[i]->getSnelheid())/Vmax);
+            Voertuigen[i]->setVersnelling(hel);
+            ENSURE(Voertuigen[i]->getVersnelling() < 0,"Het moet vertragen");
+        }
+
+        if (slowdown && i == 0 && volgafstand < 50){
+            Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/vmax,4)));
             continue;
         }
-        else if (slowdown){
-            double temp = Vmax;
-            this->setVmax(vertraagfac*Vmax);
-            Voertuigen[i]->setVersnelling(-(4.61*Voertuigen[i]->getVersnelling())/Vmax);
-            this->setVmax(temp);
-            ENSURE(Voertuigen[i]->getVersnelling() < 0,"Het moet vertragen");
+        else if (i == 0){
+            Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/Vmax,4)));
+            ENSURE((Voertuigen[i]->getVersnelling() > 0) && (delta ==0),"Het moet versnellen");
             continue;
         }
         else{
             volgafstand = Voertuigen[i-1]->getPositie() - Voertuigen[i]->getPositie() - Voertuigen[i-1]->getLengte();
-            snelheidsverchil = Voertuigen[i]->getSnelheid() - Voertuigen[i-1]->getSnelheid();
-            if (0 < (Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid() * snelheidsverchil)/2*sqrt(1.44*4.61)))){
-                max =Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid()*snelheidsverchil)/2*sqrt(1.44*4.61));
+            if(slowdown || volgafstand <= fmin){
+                volgafstand = Voertuigen[i-1]->getPositie() - Voertuigen[i]->getPositie() - Voertuigen[i-1]->getLengte();
+                snelheidsverchil = Voertuigen[i]->getSnelheid() - Voertuigen[i-1]->getSnelheid();
+                if (0 < (Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid() * snelheidsverchil)/2*sqrt(Amax*Bmax)))){
+                    max =Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid()*snelheidsverchil)/2*sqrt(Amax*Bmax));
+                }
+                delta = (fmin + max)/volgafstand;
+                Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/Vmax,4) - pow(delta,2)));
             }
-            delta = (4 + max)/volgafstand;
-            Voertuigen[i]->setVersnelling(1.44 * (1-pow(Voertuigen[i]->getVersnelling()/Vmax,4) - pow(delta,2)));
-            ENSURE(1.44 * (1-pow(Voertuigen[i]->getVersnelling()/Vmax,4) - pow(delta,2))>0,"Het moet versnellen");
+            else{
+                volgafstand = Voertuigen[i-1]->getPositie() - Voertuigen[i]->getPositie() - Voertuigen[i-1]->getLengte();
+                snelheidsverchil = Voertuigen[i]->getSnelheid() - Voertuigen[i-1]->getSnelheid();
+                if (0 < (Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid() * snelheidsverchil)/2*sqrt(Amax*Bmax)))){
+                    max =Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid()*snelheidsverchil)/2*sqrt(Amax*Bmax));
+                }
+                delta = (fmin + max)/volgafstand;
+                Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/Vmax,4) - pow(delta,2)));
+//            ENSURE(Voertuigen[i]->getVersnelling() > 0,"Het moet versnellen");
+            }
+
         }
     }
 }
@@ -151,11 +175,15 @@ void Baan::BerekenSnelheid() {
         else if (Voertuigen[i]->getSnelheid() + (Voertuigen[i]->getVersnelling()*simTime) < 0){
             Voertuigen[i]->setPositie(Voertuigen[i]->getPositie()-(pow(Voertuigen[i]->getSnelheid(),2)/(2*Voertuigen[i]->getVersnelling())));
         }
-        else{
+        else if (Voertuigen[i]->getSnelheid() + (Voertuigen[i]->getVersnelling()*simTime) <= Vmax){
             Voertuigen[i]->setSnelheid(Voertuigen[i]->getSnelheid() + (Voertuigen[i]->getVersnelling()*simTime));
-            int even = lround(Voertuigen[i]->getPositie() + (Voertuigen[i]->getSnelheid()*simTime) + (Voertuigen[i]->getVersnelling() * (pow(simTime,2)/2)));
+            double even = Voertuigen[i]->getPositie() + (Voertuigen[i]->getSnelheid()*simTime) + (Voertuigen[i]->getVersnelling() * (pow(simTime,2)/2));
             Voertuigen[i]->setPositie(even);
-            ENSURE(Voertuigen[i]->getPositie() == even, "Failed assertion");
+//            ENSURE(Voertuigen[i]->getPositie() == even, "Failed assertion");
+        }
+        else{
+            double even = Voertuigen[i]->getPositie() + (Voertuigen[i]->getSnelheid()*simTime) + (Voertuigen[i]->getVersnelling() * (pow(simTime,2)/2));
+            Voertuigen[i]->setPositie(even);
         }
     }
 }
