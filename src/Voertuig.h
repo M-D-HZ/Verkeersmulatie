@@ -13,12 +13,14 @@ using namespace std;
 class Voertuig{
 private:
     string baan;
-    double positie;
+    int positie;
     int lengte;
     double snelheid;
     double versnelling;
 public:
+    // CONSTRUCTORS
     Voertuig(int lengte);
+    // GETTERS AND SETTERS
     double getVersnelling() const;
     void setVersnelling(double versnelling);
     int getLengte() const;
@@ -26,9 +28,9 @@ public:
     double getSnelheid() const;
     void setSnelheid(double snelheid);
     const string &getBaan();
-    double getPositie();
+    int getPositie();
     void setBaan(string const &name);
-    void setPositie(double number);
+    void setPositie(int number);
 
 };
 

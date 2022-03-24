@@ -4,8 +4,6 @@
 #include "Baan.h"
 #include "VerkeersLicht.h"
 #include "Voertuig.h"
-#include "VoertuigGenerator.h"
-#include "../tinyxml/tinyxml.h"
 #include <string>
 #include <sstream>
 
@@ -61,9 +59,12 @@ void VerkeerSituatie::read(const char *fileName, VerkeerSituatie& verk) {
                 if (elemNameto == "cyclus") {
                     Licht->setCyclus(getal(elemto->GetText()));
                     Licht->setClone(getal(elemto->GetText()));
-                    for (unsigned int i = 0; i < unsigned(verk.Banen.size()); i++) {
-                        if (verk.Banen[i].getNaam() == Licht->getBaan()) {
-                            verk.Banen[i].setVerkeerslicht(Licht);
+                    for (unsigned int i = 0; i < unsigned(this->Banen.size()); i++) {
+//                        string k = verk.Banen[i].getNaam();
+                        if (this->Banen[i]->getNaam() == Licht->getBaan()) {
+                            int ev = this->Banen[i]->getLichtSize();
+                            this->Banen[i]->setVerkeerslicht(Licht);
+                            ENSURE(unsigned(this->Banen[i]->getLichtSize()) == unsigned(ev+1),"you have added new trafic lights");
 //                        delete Licht;
                         }
                     }

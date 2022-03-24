@@ -3,12 +3,18 @@
 
 #include "Voertuig.h"
 
+// CONSTRUCTORS
+Voertuig::Voertuig(int lengte) : lengte(lengte) {
+    snelheid = 0;
+    versnelling = 0;
+}
 
+// GETTERS AND SETTERS
 const string &Voertuig::getBaan() {
     return baan;
 }
 
-double Voertuig::getPositie() {
+int Voertuig::getPositie() {
     return positie;
 }
 
@@ -16,7 +22,7 @@ void Voertuig::setBaan(const string &name) {
     baan = name;
 }
 
-void Voertuig::setPositie(double number) {
+void Voertuig::setPositie(int number) {
     positie = number;
 }
 
@@ -44,8 +50,4 @@ void Voertuig::setVersnelling(double versnel) {
     versnelling = versnel;
 }
 
-Voertuig::Voertuig(int lengte) : lengte(lengte) {
-    snelheid = 0;
-    versnelling = 0;
-}
 

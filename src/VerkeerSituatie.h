@@ -12,7 +12,7 @@ using namespace std;
 
 class VerkeerSituatie{
 private:
-    vector<Baan> Banen; //Aantal banen bijhouden
+    vector<Baan*> Banen; //Aantal banen bijhouden
     int Tijdstip;
 public:
     VerkeerSituatie();
@@ -20,10 +20,10 @@ public:
     int getSimulatieTijd() const;
 
     void setSimulatieTijd(int simulatieTijd);
-    void UpdateBanen(vector<Baan> baan);
+    void UpdateBanen(vector<Baan*> baan);
     void addBaan(Baan weg);
-    vector<Baan> GetBanen();
-    void read(const char *fileName, VerkeerSituatie &verk);
+    vector<Baan*> GetBanen();
+    void read(const char *fileName);
     int getal(string const &Getal);
 };
 

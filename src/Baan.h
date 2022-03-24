@@ -14,24 +14,42 @@ class Baan{
 private:
     string naam;
     int lengte;
-    vector<VerkeersLicht> Verkeerslichten;
-    vector<Voertuig> Voertuigen;
+    double simTime;
+    double Vmax;
+    double vertraagfac;
+    vector<VerkeersLicht*> Verkeerslichten;
+    vector<Voertuig*> Voertuigen;
 
 public:
+    // CONSTRUCTOR
     Baan();
-    const vector<VerkeersLicht> &getVerkeerslichten() const;
-    const vector<Voertuig> &getVoertuigen() const;
-    const string &getNaam() const;
+    // GETTERS AND SETTERS
+    bool properlyInit();
+    const string &getNaam();
     void setNaam(const string &name);
-    int getLengte() const;
+    int getLengte();
     void setLengte(int length);
+    int getRedLight();
+    double getSimTime();
+    int getLichtSize();
+    int getVoertuigSize();
+    void setSimTime(double simTime);
+    double getVmax();
+    void setVmax(double vmax);
+    double getVertraagfac();
+    void setVertraagfac(double vertraagfac);
+    const vector<VerkeersLicht*> &getVerkeerslichten();
+    const vector<Voertuig*> &getVoertuigen();
     void setVerkeerslicht(VerkeersLicht* licht);
     void setVoertuig(Voertuig* motor);
+    // ADDED FUNCTIONS
     void PrintVoertuigen();
     void BerekenSnelheid();
-    void BerekenVersnellingGroen();
-    void BerekenVersnellingRood(double pos);
-    bool isEmpty();
+    void BerekenVersnellingGroen(bool slowdown);
+    void ReduceCycle();
+    bool isLightRed();
+//    void BerekenVersnellingRood();
+    vector<pair<bool,int> > getRedLights();
 };
 
 

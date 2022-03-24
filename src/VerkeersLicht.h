@@ -17,6 +17,7 @@ private:
     int cyclus;
     int Clone;
     string Color;
+    VerkeersLicht* isThis;
 public:
     VerkeersLicht();
 
@@ -35,10 +36,11 @@ public:
     void setCyclus(int cyclus);
 
     void reduce();
+    bool properlyInitialized();
 
+    //KLEUR VERANDERING
     void switchColor();
 
-    string getColor();
 
 };
 

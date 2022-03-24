@@ -2,10 +2,15 @@
 //        Student 2: X Tenzin Choezin - s0202163
 
 #include "VerkeersLicht.h"
+#include "DesignByContract.h"
 
 
 const string &VerkeersLicht::getBaan() const {
-    return baan;
+    return this->baan;
+}
+
+bool VerkeersLicht::properlyInitialized(){
+    return isThis == this;
 }
 
 void VerkeersLicht::setBaan(const string &bane) {
@@ -29,16 +34,21 @@ void VerkeersLicht::setCyclus(int cycl) {
 }
 
 void VerkeersLicht::reduce(){
+    REQUIRE(this->properlyInitialized(), "Not properly initialized");
     if (Clone == 0){
         Clone = cyclus;
         switchColor();
+        ENSURE(this->getClone() == cyclus, "Failed Assertion");
         return;
     }
-     Clone -=1;
+    int even = Clone;
+    Clone -=1;
+    ENSURE(this->getClone() == even-1, "Failed assertion");
 }
 
 VerkeersLicht::VerkeersLicht() {
     Color = "green";
+    isThis = this;
 }
 
 void VerkeersLicht::switchColor() {
@@ -50,10 +60,8 @@ void VerkeersLicht::switchColor() {
     }
 }
 
-string VerkeersLicht::getColor(){
-    return Color;
+int VerkeersLicht::getClone() const {
+    return Clone;
 }
 
-void VerkeersLicht::setClone(int clone) {
-    Clone = clone;
-}
+

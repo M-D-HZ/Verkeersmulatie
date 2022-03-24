@@ -12,7 +12,7 @@ include_directories(gtest/include)
 link_directories(gtest/lib)
 
 # Set source files for RELEASE target
-set(RELEASE_SOURCE_FILES src/VoertuigGenerator.cpp src/VoertuigGenerator.h src/Voertuig.cpp src/Voertuig.h src/VerkeersLicht.cpp
+set(RELEASE_SOURCE_FILES src/VerkeerTests.cpp src/DesignByContract.cpp src/DesignByContract.h src/VoertuigGenerator.cpp src/VoertuigGenerator.h src/Voertuig.cpp src/Voertuig.h src/VerkeersLicht.cpp
         src/VerkeersLicht.h src/Baan.cpp src/Baan.h src/ReadFile.cpp src/ReadFile.h src/VerkeerSituatie.cpp src/VerkeerSituatie.h
         src/main.cpp tinyxml/tinystr.h tinyxml/tinyxml.h tinyxml/tinystr.cpp tinyxml/tinyxml.cpp tinyxml/tinyxmlerror.cpp
         tinyxml/tinyxmlparser.cpp)
