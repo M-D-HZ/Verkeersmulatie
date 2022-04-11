@@ -3,6 +3,7 @@
 
 #include "Voertuig.h"
 #include "DesignByContract.h"
+#include "VerkeersLicht.h"
 
 // CONSTRUCTORS
 Voertuig::Voertuig(int lengte) : lengte(lengte) {
@@ -81,7 +82,7 @@ void Voertuig::setVersnelling(double versnel) {
 }
 
 VerkeersLicht* Voertuig::dichtBijzijndeLicht(vector<VerkeersLicht*> lichten){
-    for (int i = 0; i <lichten.size() ; i++) {
+    for (unsigned int i = 0; i <lichten.size() ; i++) {
         if(this->getPositie() < lichten[i]->getPositie()){
             return lichten[i];
         }
@@ -89,33 +90,21 @@ VerkeersLicht* Voertuig::dichtBijzijndeLicht(vector<VerkeersLicht*> lichten){
     return NULL;
 }
 
-void Voertuig::berekenVersnelling(vector<VerkeersLicht*> Verkeerslichten,int voertuigPos) {
-    VerkeersLicht* licht = dichtBijzijndeLicht(Verkeerslichten);
+void Voertuig::berekenVersnelling(vector<VerkeersLicht*> Verkeerslichten,Voertuig* even) {
+    VerkeersLicht *licht = dichtBijzijndeLicht(Verkeerslichten);
+    double volgafstand = even->getPositie() - this->getPositie() - even->getLengte();
     double lichtafstand = licht->getPositie() - this->getPositie();
-    if(licht->getColor()=="Rood" && lichtafstand<15){
+    if(licht->getColor()=="Rood" && lichtafstand<15 && even->getPositie()>licht->getPositie() && licht !=NULL){
         double hel = -((Bmax * snelheid)/vmax);
         this->setVersnelling(hel);
     }
-    else if(licht->getColor()=="Rood" && lichtafstand<50){
+    else if(licht->getColor()=="Rood" && lichtafstand<50 && even->getPositie()>licht->getPositie() && licht !=NULL){
         this->setVersnelling(Amax * (1-pow(snelheid/vmax,4)));
     }
-    else{
+    else if(even==NULL){
         this->setVersnelling(Amax * (1-pow(snelheid/Vmax,4)));
     }
-}
-
-void Voertuig::berekenversnelling(vector<VerkeersLicht*> Verkeerslichten,Voertuig* even) {
-    VerkeersLicht *licht = dichtBijzijndeLicht(Verkeerslichten);
-    double lichtafstand = licht->getPositie() - this->getPositie();
-    if(licht->getColor()=="Rood" && lichtafstand<15){
-        double hel = -((Bmax * snelheid)/vmax);
-        this->setVersnelling(hel);
-    }
-    else if(licht->getColor()=="Rood" && lichtafstand<50){
-        this->setVersnelling(Amax * (1-pow(snelheid/vmax,4)));
-    }
     else{
-        double volgafstand = even->getPositie() - this->getPositie() - even->getLengte();
         double max = 0;
         double snelheidsverchil = this->getSnelheid() - even->getSnelheid();
         if (0 < (snelheid + ((snelheid * snelheidsverchil) / 2 * sqrt(Amax * Bmax)))) {
@@ -124,6 +113,18 @@ void Voertuig::berekenversnelling(vector<VerkeersLicht*> Verkeerslichten,Voertui
         double delta = (fmin + max) / volgafstand;
         this->setVersnelling(Amax * (1 - pow(snelheid /Vmax, 4) - pow(delta, 2)));
     }
+}
 
-
+void Voertuig::BerekenSnelheid(double time){
+    if((snelheid + (versnelling * time))<0){
+        positie = (positie-(pow(snelheid,2)/(2*versnelling)));
+        snelheid = 0;
+    }
+    else if ((snelheid + (versnelling*time)) <= Vmax){
+        snelheid = (snelheid + (versnelling*time));
+        positie = positie + (snelheid*time) + (versnelling * (pow(time,2)/2));
+    }
+    else{
+        positie = positie + (snelheid*time) + (versnelling * (pow(time,2)/2));
+    }
 }

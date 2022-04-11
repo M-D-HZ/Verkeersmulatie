@@ -71,20 +71,6 @@ const vector<VerkeersLicht*> &Baan::getVerkeerslichten() {
     return Verkeerslichten;
 }
 
-int Baan::getRedLight() {
-    REQUIRE(this->properlyInit(), "Not properly initialized");
-    ENSURE(!Verkeerslichten.empty(), "Er zijn geen verkeerslichten");
-    int positie;
-    for (unsigned int i = 0; i < Verkeerslichten.size(); ++i) {
-        if (Verkeerslichten[i]->getColor() == "red"){
-            if (positie > Verkeerslichten[i]->getPositie()){
-                continue;
-            }
-            positie = Verkeerslichten[i]->getPositie();
-        }
-    }
-    return positie;
-}
 
 void Baan::setNaam(const string &name) {
     REQUIRE(this->properlyInit(), "Not properly initialized");
@@ -158,84 +144,28 @@ void Baan::PrintVoertuigen() {
     }
 }
 
-void Baan::BerekenVersnellingGroen(bool slowdown) {
+void Baan::Versnelling() {
     REQUIRE(this->properlyInit(), "Not properly initialized");
-    double volgafstand = 0;
-    double snelheidsverchil = 0;
-    double delta = 0;
-    double max = 0;
     pos = Verkeerslichten[0]->getPositie();
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; i++) {
-        volgafstand = pos - Voertuigen[i]->getPositie();
-        if(slowdown && i == 0 && volgafstand < 15){
-            cout << "!!--> RED LIGHT <--!!" << endl;
-            Voertuigen[i]->berekenVersnelling(Verkeerslichten,1);
-            double hel = -((Bmax*Voertuigen[i]->getSnelheid())/Vmax);
-            Voertuigen[i]->setVersnelling(hel);
-            ENSURE(Voertuigen[i]->getVersnelling() < 0,"Het moet vertragen");
-        }
-        else if (slowdown && i == 0 && volgafstand < 50){
-            cout << "!!--> RED LIGHT <--!!" << endl;
-            double k = Voertuigen[i]->getVersnelling();
-            Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/vmax,4)));
-            ENSURE(Voertuigen[i]->getVersnelling() != k,"Het versnelling blijft dezelfde");
-            continue;
-        }
-        else if (i == 0){
-            Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/Vmax,4)));
-            ENSURE((Voertuigen[i]->getVersnelling() > 0) && (delta ==0),"Het moet versnellen");
-            continue;
+        if(i==0){
+            Voertuigen[i]->berekenVersnelling(Verkeerslichten,NULL);
         }
         else{
-            volgafstand = Voertuigen[i-1]->getPositie() - Voertuigen[i]->getPositie() - Voertuigen[i-1]->getLengte();
-            if(slowdown || volgafstand <= fmin){
-                double k = Voertuigen[i]->getVersnelling();
-                volgafstand = Voertuigen[i-1]->getPositie() - Voertuigen[i]->getPositie() - Voertuigen[i-1]->getLengte();
-                snelheidsverchil = Voertuigen[i]->getSnelheid() - Voertuigen[i-1]->getSnelheid();
-                if (0 < (Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid() * snelheidsverchil)/2*sqrt(Amax*Bmax)))){
-                    max =Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid()*snelheidsverchil)/2*sqrt(Amax*Bmax));
-                }
-                delta = (fmin + max)/volgafstand;
-                Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/Vmax,4) - pow(delta,2)));
-                ENSURE(Voertuigen[i]->getVersnelling() != k,"Het versnelling blijft dezelfde");
-            }
-            else{
-                double k = Voertuigen[i]->getVersnelling();
-                volgafstand = Voertuigen[i-1]->getPositie() - Voertuigen[i]->getPositie() - Voertuigen[i-1]->getLengte();
-                snelheidsverchil = Voertuigen[i]->getSnelheid() - Voertuigen[i-1]->getSnelheid();
-                if (0 < (Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid() * snelheidsverchil)/2*sqrt(Amax*Bmax)))){
-                    max =Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid()*snelheidsverchil)/2*sqrt(Amax*Bmax));
-                }
-                delta = (fmin + max)/volgafstand;
-                Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/Vmax,4) - pow(delta,2)));
-                ENSURE(Voertuigen[i]->getVersnelling() != k,"Het versnelling blijft dezelfde");
-            }
+            Voertuigen[i]->berekenVersnelling(Verkeerslichten,Voertuigen[i-1]);
         }
     }
 }
 
-void Baan::BerekenSnelheid() {
+void Baan::Snelheid() {
     REQUIRE(this->properlyInit(), "Not properly initialized");
     REQUIRE(!this->Voertuigen.empty(), "Voertuigen bestaan niet");
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; i++) {
         if (Voertuigen[i]->getPositie() > this->lengte){
             Voertuigen.erase(Voertuigen.begin());
         }
-        else if (Voertuigen[i]->getSnelheid() + (Voertuigen[i]->getVersnelling()*simTime) < 0){
-            double check = Voertuigen[i]->getPositie()-(pow(Voertuigen[i]->getSnelheid(),2)/(2*Voertuigen[i]->getVersnelling()));
-            Voertuigen[i]->setPositie(Voertuigen[i]->getPositie()-(pow(Voertuigen[i]->getSnelheid(),2)/(2*Voertuigen[i]->getVersnelling())));
-            ENSURE(Voertuigen[i]->getPositie() == check, "Failed assertion");
-        }
-        else if (Voertuigen[i]->getSnelheid() + (Voertuigen[i]->getVersnelling()*simTime) <= Vmax){
-            Voertuigen[i]->setSnelheid(Voertuigen[i]->getSnelheid() + (Voertuigen[i]->getVersnelling()*simTime));
-            double even = Voertuigen[i]->getPositie() + (Voertuigen[i]->getSnelheid()*simTime) + (Voertuigen[i]->getVersnelling() * (pow(simTime,2)/2));
-            Voertuigen[i]->setPositie(even);
-            ENSURE(Voertuigen[i]->getPositie() == even, "Failed assertion");
-        }
         else{
-            double even = Voertuigen[i]->getPositie() + (Voertuigen[i]->getSnelheid()*simTime) + (Voertuigen[i]->getVersnelling() * (pow(simTime,2)/2));
-            Voertuigen[i]->setPositie(even);
-            ENSURE(Voertuigen[i]->getPositie() == even, "Failed Assertion");
+            Voertuigen[i]->BerekenSnelheid(simTime);
         }
     }
 }
@@ -247,31 +177,6 @@ void Baan::ReduceCycle() {
         Verkeerslichten[i]->reduce();
     }
 }
-
-bool Baan::isLightRed() {
-    REQUIRE(this->properlyInit(), "Not properly initialized");
-    for (unsigned int i = 0; i < Verkeerslichten.size(); ++i) {
-        if (Verkeerslichten[i]->getColor() == "red"){
-            return true;
-        }
-    }
-    return false;
-}
-
-vector<pair<bool,int> > Baan::getRedLights(){
-    REQUIRE(this->properlyInit(), "Not properly initialized");
-    vector<pair<bool,int> > lights;
-    for (unsigned int i = 0; i < Verkeerslichten.size(); ++i) {
-        if (Verkeerslichten[i]->getColor() == "red"){
-            int even = lights.size();
-            lights.push_back(make_pair(true,Verkeerslichten[i]->getPositie()));
-            ENSURE(unsigned(lights.size()) == unsigned(even+1),"Er moet lichten worden toegevoegd");
-        }
-    }
-    ENSURE(!lights.empty(),"Het mag niet leeg zijn");
-    return lights;
-}
-
 
 
 // GARBAGE FUNCTIONS WE MIGHT USE AGAIN

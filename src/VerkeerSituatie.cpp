@@ -143,7 +143,7 @@ void VerkeerSituatie::UpdateBanen(vector<Baan*> ways) {
 
 void VerkeerSituatie::start(){
     REQUIRE(this->properlyInitialized(),"It is not initialised");
-    simulatie = 0;
+    int simulatie = 0;
     this->read("Banen.xml"); // 8:30
     Tijdstip = -1; // Zet hier hoeveel tijdstippen je wilt simuleren
     for (unsigned int i = 0; i < Banen.size(); ++i) {
@@ -151,8 +151,8 @@ void VerkeerSituatie::start(){
             cout << "---> Tijd: "<< simulatie << endl;
             Banen[i]->ReduceCycle();
             Banen[i]->PrintVoertuigen();
-            Banen[i]->BerekenSnelheid();
-            Banen[i]->BerekenVersnellingGroen(Banen[i]->isLightRed());
+            Banen[i]->Snelheid();
+            Banen[i]->Versnelling();
             simulatie +=1;
         }
     ENSURE(!Banen[i]->getVoertuigen().empty(),"There shouldn't be any car left");

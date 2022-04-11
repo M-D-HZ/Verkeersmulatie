@@ -35,7 +35,6 @@ public:
     void setNaam(const string &name);
     int getLengte();
     void setLengte(int length);
-    int getRedLight();
     double getSimTime();
     int getLichtSize();
     int getVoertuigSize();
@@ -50,12 +49,12 @@ public:
     void setVoertuig(Voertuig* motor);
     // ADDED FUNCTIONS
     void PrintVoertuigen();
-    void BerekenSnelheid();
-    void BerekenVersnellingGroen(bool slowdown);
+    void Snelheid();
+    void Versnelling();
     void ReduceCycle();
-    bool isLightRed();
+
 //    void BerekenVersnellingRood();
-    vector<pair<bool,int> > getRedLights();
+
 };
 
 

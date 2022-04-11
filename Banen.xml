@@ -1,22 +1,25 @@
 <?xml version="1.0" ?>
 <ROOT>
-<BAAN>
-    <naam>Middelheimlaan</naam>
-    <lengte>500</lengte>
-</BAAN>
-<VERKEERSLICHT>
-    <baan>Middelheimlaan</baan>
-    <positie>500</positie>
-    <cyclus>20</cyclus>
-</VERKEERSLICHT>
-<VOERTUIG>
-    <baan>Middelheimlaan</baan>
-    <positie>40</positie>
-</VOERTUIG>
-<VOERTUIG>
-    <baan>Middelheimlaan</baan>
-    <positie>20</positie>
-</VOERTUIG>
+    <BAAN>
+        <naam>Middelheimlaan</naam>
+        <lengte>500</lengte>
+    </BAAN>
+    <VERKEERSLICHT>
+        <baan>Middelheimlaan</baan>
+        <positie>500</positie>
+        <cyclus>20</cyclus>
+    </VERKEERSLICHT>
+
+    <VOERTUIG>
+        <baan>Middelheimlaan</baan>
+        <positie>40</positie>
+    </VOERTUIG>
+
+    <VOERTUIG>
+        <baan>Middelheimlaan</baan>
+        <positie>20</positie>
+    </VOERTUIG>
+
 </ROOT>
 
 

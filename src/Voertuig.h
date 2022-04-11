@@ -44,9 +44,9 @@ public:
     double getPositie();
     void setBaan(string const &name);
     void setPositie(double number);
-    void berekenVersnelling(vector<VerkeersLicht*> Verkeerslichten,int voertuigPos);
+    void berekenVersnelling(vector<VerkeersLicht*> Verkeerslichten,Voertuig* even);
     VerkeersLicht* dichtBijzijndeLicht(vector<VerkeersLicht*> Verkeerslichten);
-    void berekenversnelling(vector<VerkeersLicht*> Verkeerslichten,Voertuig*even);
+    void BerekenSnelheid(double time);
 
     //Properly Initialized
     bool properlyInitialized();
