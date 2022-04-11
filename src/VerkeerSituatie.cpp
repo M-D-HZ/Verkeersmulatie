@@ -6,20 +6,38 @@
 #include "Voertuig.h"
 #include <string>
 #include <sstream>
+#include "DesignByContract.h"
 
 
-VerkeerSituatie::VerkeerSituatie() {}
 
-void VerkeerSituatie::addBaan(Baan weg) {
-    Banen.push_back(weg);
+VerkeerSituatie::VerkeerSituatie() {
+    isThis = this;
+    this->start(); // 8:30
+}
+bool VerkeerSituatie::properlyInitialized() {
+    if(isThis == this){
+        return true;
+    }
+    return false;
 }
 
-vector<Baan> VerkeerSituatie::GetBanen() {
+void VerkeerSituatie::addBaan(Baan weg){
+    REQUIRE(properlyInitialized(),"het is geinitialiseerd");
+    unsigned int i= Banen.size();
+    Banen.push_back(&weg);
+    ENSURE(unsigned(Banen.size()) == unsigned(i+1), "New road has been added");
+
+}
+
+vector<Baan*> VerkeerSituatie::GetBanen() {
+    REQUIRE(properlyInitialized(),"It is initialised");
+    ENSURE(!Banen.empty(),"Banen is empty");
     return Banen;
 }
 
 
-void VerkeerSituatie::read(const char *fileName, VerkeerSituatie& verk) {
+void VerkeerSituatie::read(const char *fileName) {
+    REQUIRE((*fileName != ' ') && (this->properlyInitialized()), "input file has a name and/or it is initialised");
     TiXmlDocument doc;
     if(!doc.LoadFile(fileName)) {
         std::cerr << doc.ErrorDesc() << std::endl;
@@ -42,7 +60,8 @@ void VerkeerSituatie::read(const char *fileName, VerkeerSituatie& verk) {
                 }
                 else if (elemNameto == "lengte") {
                     baan->setLengte(getal(elemto->GetText()));
-                    verk.Banen.push_back(*baan);
+                    this->Banen.push_back(baan);
+                    ENSURE(!this->Banen.empty(),"There have added new road");
                 }
             }
         }
@@ -81,9 +100,11 @@ void VerkeerSituatie::read(const char *fileName, VerkeerSituatie& verk) {
                 if (elemNameto == "positie") {
                     TruckSan->setPositie(getal(elemto->GetText()));
                     TruckSan->setLengte(4);
-                    for (unsigned int i = 0; i < unsigned(verk.Banen.size()); ++i) {
-                        if (verk.Banen[i].getNaam() == TruckSan->getBaan()) {
-                            verk.Banen[i].setVoertuig(TruckSan);
+                    for (unsigned int i = 0; i < unsigned(this->Banen.size()); ++i) {
+                        if (this->Banen[i]->getNaam() == TruckSan->getBaan()) {
+                            int ev = this->Banen[i]->getVoertuigSize();
+                            this->Banen[i]->setVoertuig(TruckSan);
+                            ENSURE((unsigned(this->Banen[i]->getVoertuigSize()) == unsigned (ev +1)),"You have added new car");
                         }
                     }
                 }
@@ -93,25 +114,50 @@ void VerkeerSituatie::read(const char *fileName, VerkeerSituatie& verk) {
 }
 
 int VerkeerSituatie::getal(string const &getal){
-    int num;
+    REQUIRE((getal != "") ,"Je mag geen lege string hebben");
+    unsigned int num;
     stringstream ss;
     ss<<getal;
     ss>>num;
+    ENSURE(num > 0,"There are no negative positions");
     return num;
 }
 
-int VerkeerSituatie::getSimulatieTijd() const {
+int VerkeerSituatie::getSimulatieTijd(){
+    REQUIRE(this->properlyInitialized(),"It is initialised");
+    ENSURE(Tijdstip>0,"Verschill in tijd is nooit negatief");
     return Tijdstip;
 }
 
 void VerkeerSituatie::setSimulatieTijd(int simulatieTijd) {
+    REQUIRE(this->properlyInitialized(),"It is initialised");
+    ENSURE(Tijdstip>0,"Tijd is nooit negatief");
     Tijdstip = simulatieTijd;
 }
 
-void VerkeerSituatie::UpdateBanen(vector<Baan> ways) {
+void VerkeerSituatie::UpdateBanen(vector<Baan*> ways) {
+    REQUIRE(this->properlyInitialized(),"It is not initialised");
     Banen = ways;
+//    ENSURE(this->GetBanen() == ways,"Baan has to change to the new vector of Baan");
 }
 
+void VerkeerSituatie::start(){
+    REQUIRE(this->properlyInitialized(),"It is not initialised");
+    simulatie = 0;
+    this->read("Banen.xml"); // 8:30
+    Tijdstip = -1; // Zet hier hoeveel tijdstippen je wilt simuleren
+    for (unsigned int i = 0; i < Banen.size(); ++i) {
+        while (!Banen[i]->getVoertuigen().empty() && simulatie != Tijdstip){
+            cout << "---> Tijd: "<< simulatie << endl;
+            Banen[i]->ReduceCycle();
+            Banen[i]->PrintVoertuigen();
+            Banen[i]->BerekenSnelheid();
+            Banen[i]->BerekenVersnellingGroen(Banen[i]->isLightRed());
+            simulatie +=1;
+        }
+    ENSURE(!Banen[i]->getVoertuigen().empty(),"There shouldn't be any car left");
+    }
+}
 
 
 

@@ -19,22 +19,23 @@ private:
     string Color;
     VerkeersLicht* isThis;
 public:
+    //CONSTRUCTOR
     VerkeersLicht();
 
-    const string &getBaan() const;
+    //GETTERS
+    const string &getBaan();
+    double getPositie();
+    int getCyclus() ;
+    string getColor();
 
+    int getClone();
+
+    //SETTERS
     void setBaan(const string &baan);
-
-    double getPositie() const;
-
     void setPositie(double positie);
-
     void setClone(int clone);
-
-    int getCyclus() const;
-
     void setCyclus(int cyclus);
-
+    //
     void reduce();
     bool properlyInitialized();
 

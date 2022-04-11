@@ -12,6 +12,7 @@ class VerkeersLicht;
 class Voertuig;// Predeclaring classes before use
 class Baan{
 private:
+    Baan *isThis;
     string naam;
     int lengte;
     double simTime;

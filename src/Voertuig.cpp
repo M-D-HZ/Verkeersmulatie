@@ -10,6 +10,12 @@ Voertuig::Voertuig(int lengte) : lengte(lengte) {
     versnelling = 0;
     positie = 0;
     isThis = this;
+    Vmax = 16.6;
+    vertraagfac = 0.4;
+    Amax = 1.44;
+    Bmax = 4.61;
+    fmin = 4;
+    vmax = vertraagfac*Vmax;
 }
 bool Voertuig::properlyInitialized(){
     return isThis == this;
@@ -74,4 +80,50 @@ void Voertuig::setVersnelling(double versnel) {
     ENSURE(this->getVersnelling() == versnel, "Failed Assertion");
 }
 
+VerkeersLicht* Voertuig::dichtBijzijndeLicht(vector<VerkeersLicht*> lichten){
+    for (int i = 0; i <lichten.size() ; i++) {
+        if(this->getPositie() < lichten[i]->getPositie()){
+            return lichten[i];
+        }
+    }
+    return NULL;
+}
 
+void Voertuig::berekenVersnelling(vector<VerkeersLicht*> Verkeerslichten,int voertuigPos) {
+    VerkeersLicht* licht = dichtBijzijndeLicht(Verkeerslichten);
+    double lichtafstand = licht->getPositie() - this->getPositie();
+    if(licht->getColor()=="Rood" && lichtafstand<15){
+        double hel = -((Bmax * snelheid)/vmax);
+        this->setVersnelling(hel);
+    }
+    else if(licht->getColor()=="Rood" && lichtafstand<50){
+        this->setVersnelling(Amax * (1-pow(snelheid/vmax,4)));
+    }
+    else{
+        this->setVersnelling(Amax * (1-pow(snelheid/Vmax,4)));
+    }
+}
+
+void Voertuig::berekenversnelling(vector<VerkeersLicht*> Verkeerslichten,Voertuig* even) {
+    VerkeersLicht *licht = dichtBijzijndeLicht(Verkeerslichten);
+    double lichtafstand = licht->getPositie() - this->getPositie();
+    if(licht->getColor()=="Rood" && lichtafstand<15){
+        double hel = -((Bmax * snelheid)/vmax);
+        this->setVersnelling(hel);
+    }
+    else if(licht->getColor()=="Rood" && lichtafstand<50){
+        this->setVersnelling(Amax * (1-pow(snelheid/vmax,4)));
+    }
+    else{
+        double volgafstand = even->getPositie() - this->getPositie() - even->getLengte();
+        double max = 0;
+        double snelheidsverchil = this->getSnelheid() - even->getSnelheid();
+        if (0 < (snelheid + ((snelheid * snelheidsverchil) / 2 * sqrt(Amax * Bmax)))) {
+            max = snelheid + ((snelheid * snelheidsverchil) / 2 * sqrt(Amax * Bmax));
+        }
+        double delta = (fmin + max) / volgafstand;
+        this->setVersnelling(Amax * (1 - pow(snelheid /Vmax, 4) - pow(delta, 2)));
+    }
+
+
+}

@@ -14,17 +14,18 @@ class VerkeerSituatie{
 private:
     vector<Baan*> Banen; //Aantal banen bijhouden
     int Tijdstip;
+    VerkeerSituatie *isThis;
 public:
     VerkeerSituatie();
-
-    int getSimulatieTijd() const;
-
+    bool properlyInitialized();
+    int getSimulatieTijd();
     void setSimulatieTijd(int simulatieTijd);
     void UpdateBanen(vector<Baan*> baan);
     void addBaan(Baan weg);
     vector<Baan*> GetBanen();
     void read(const char *fileName);
     int getal(string const &Getal);
+    void start();
 };
 
 

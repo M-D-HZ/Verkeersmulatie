@@ -37,8 +37,53 @@ double Baan::getVmax(){
     return Vmax;
 }
 
-const string &Baan::getNaam() const {
+const string &Baan::getNaam(){
+    REQUIRE(this->properlyInit(), "Not properly initialized");
+    ENSURE(naam.length() != 0, "Naam is leeg");
     return naam;
+}
+
+const vector<Voertuig*> &Baan::getVoertuigen(){
+    REQUIRE(this->properlyInit(), "Not properly initialized");
+    ENSURE(!Voertuigen.empty(), "er zijn geen voertuigen");
+    return Voertuigen;
+}
+
+double Baan::getVertraagfac() {
+    REQUIRE(this->properlyInit(), "Not properly initialized");
+    ENSURE(vertraagfac >= 0, "Vertraagfactor is negatief");
+    return vertraagfac;
+}
+
+int Baan::getLichtSize() {
+    REQUIRE(this->properlyInit(), "Not properly initialized");
+    return Verkeerslichten.size();
+}
+
+int Baan::getVoertuigSize(){
+    return Voertuigen.size();
+}
+
+
+const vector<VerkeersLicht*> &Baan::getVerkeerslichten() {
+    REQUIRE(this->properlyInit(), "Not properly initialized");
+    ENSURE(!Verkeerslichten.empty(), "Er zijn geen verkeerslichten");
+    return Verkeerslichten;
+}
+
+int Baan::getRedLight() {
+    REQUIRE(this->properlyInit(), "Not properly initialized");
+    ENSURE(!Verkeerslichten.empty(), "Er zijn geen verkeerslichten");
+    int positie;
+    for (unsigned int i = 0; i < Verkeerslichten.size(); ++i) {
+        if (Verkeerslichten[i]->getColor() == "red"){
+            if (positie > Verkeerslichten[i]->getPositie()){
+                continue;
+            }
+            positie = Verkeerslichten[i]->getPositie();
+        }
+    }
+    return positie;
 }
 
 void Baan::setNaam(const string &name) {
@@ -124,6 +169,7 @@ void Baan::BerekenVersnellingGroen(bool slowdown) {
         volgafstand = pos - Voertuigen[i]->getPositie();
         if(slowdown && i == 0 && volgafstand < 15){
             cout << "!!--> RED LIGHT <--!!" << endl;
+            Voertuigen[i]->berekenVersnelling(Verkeerslichten,1);
             double hel = -((Bmax*Voertuigen[i]->getSnelheid())/Vmax);
             Voertuigen[i]->setVersnelling(hel);
             ENSURE(Voertuigen[i]->getVersnelling() < 0,"Het moet vertragen");
@@ -132,6 +178,7 @@ void Baan::BerekenVersnellingGroen(bool slowdown) {
             cout << "!!--> RED LIGHT <--!!" << endl;
             double k = Voertuigen[i]->getVersnelling();
             Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/vmax,4)));
+            ENSURE(Voertuigen[i]->getVersnelling() != k,"Het versnelling blijft dezelfde");
             continue;
         }
         else if (i == 0){
@@ -142,6 +189,7 @@ void Baan::BerekenVersnellingGroen(bool slowdown) {
         else{
             volgafstand = Voertuigen[i-1]->getPositie() - Voertuigen[i]->getPositie() - Voertuigen[i-1]->getLengte();
             if(slowdown || volgafstand <= fmin){
+                double k = Voertuigen[i]->getVersnelling();
                 volgafstand = Voertuigen[i-1]->getPositie() - Voertuigen[i]->getPositie() - Voertuigen[i-1]->getLengte();
                 snelheidsverchil = Voertuigen[i]->getSnelheid() - Voertuigen[i-1]->getSnelheid();
                 if (0 < (Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid() * snelheidsverchil)/2*sqrt(Amax*Bmax)))){
@@ -149,8 +197,10 @@ void Baan::BerekenVersnellingGroen(bool slowdown) {
                 }
                 delta = (fmin + max)/volgafstand;
                 Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/Vmax,4) - pow(delta,2)));
+                ENSURE(Voertuigen[i]->getVersnelling() != k,"Het versnelling blijft dezelfde");
             }
             else{
+                double k = Voertuigen[i]->getVersnelling();
                 volgafstand = Voertuigen[i-1]->getPositie() - Voertuigen[i]->getPositie() - Voertuigen[i-1]->getLengte();
                 snelheidsverchil = Voertuigen[i]->getSnelheid() - Voertuigen[i-1]->getSnelheid();
                 if (0 < (Voertuigen[i]->getSnelheid()+((Voertuigen[i]->getSnelheid() * snelheidsverchil)/2*sqrt(Amax*Bmax)))){
@@ -158,7 +208,7 @@ void Baan::BerekenVersnellingGroen(bool slowdown) {
                 }
                 delta = (fmin + max)/volgafstand;
                 Voertuigen[i]->setVersnelling(Amax * (1-pow(Voertuigen[i]->getSnelheid()/Vmax,4) - pow(delta,2)));
-//            ENSURE(Voertuigen[i]->getVersnelling() > 0,"Het moet versnellen");
+                ENSURE(Voertuigen[i]->getVersnelling() != k,"Het versnelling blijft dezelfde");
             }
         }
     }

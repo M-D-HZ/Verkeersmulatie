@@ -6,6 +6,8 @@
 #include "map"
 #include "vector"
 #include "Baan.h"
+#include<iterator>
+#include "cmath"
 
 using namespace std;
 
@@ -18,6 +20,16 @@ private:
     double snelheid;
     double versnelling;
     Voertuig* isThis;
+    double Vmax;
+    double vmax;
+    double vertraagfac;
+    double Amax;
+    double Bmax;
+    int fmin;
+
+
+
+
 public:
     // CONSTRUCTORS
     Voertuig(int lengte);
@@ -32,6 +44,9 @@ public:
     double getPositie();
     void setBaan(string const &name);
     void setPositie(double number);
+    void berekenVersnelling(vector<VerkeersLicht*> Verkeerslichten,int voertuigPos);
+    VerkeersLicht* dichtBijzijndeLicht(vector<VerkeersLicht*> Verkeerslichten);
+    void berekenversnelling(vector<VerkeersLicht*> Verkeerslichten,Voertuig*even);
 
     //Properly Initialized
     bool properlyInitialized();
