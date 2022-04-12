@@ -18,6 +18,7 @@ private:
     int Tijdstip;
     VerkeerSituatie *isThis;
     VoertuigGenerator generator;
+    vector<Voertuig*> voertuigen;
 public:
     VerkeerSituatie();
     bool properlyInitialized();
@@ -29,6 +30,7 @@ public:
     void read(const char *fileName);
     int getal(string const &Getal);
     void start();
+    bool isleeg();
 };
 
 
