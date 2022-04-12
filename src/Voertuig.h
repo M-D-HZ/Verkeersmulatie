@@ -26,10 +26,6 @@ private:
     double Amax;
     double Bmax;
     int fmin;
-
-
-
-
 public:
     // CONSTRUCTORS
     Voertuig(int lengte);

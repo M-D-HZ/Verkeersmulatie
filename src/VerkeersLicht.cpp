@@ -80,9 +80,11 @@ void VerkeersLicht::switchColor() {
     REQUIRE(this->properlyInitialized(), "Not properly initialized");
     if (this->Color == "green"){
         this->Color = "red";
+        cout << "!!--> REDLIGHT <--!!" << endl<<endl;
     }
     else{
         this->Color = "green";
+        cout << "!!--> GREENLIGHT <--!!" << endl<<endl;
     }
 }
 

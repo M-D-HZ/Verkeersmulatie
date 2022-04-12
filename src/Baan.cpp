@@ -1,3 +1,5 @@
+
+
 // Groep: Student 1: Anass Hamzaoui - s0210294
 //        Student 2: X Tenzin Choezin - s0202163
 #include "Baan.h"
@@ -12,13 +14,6 @@ using namespace std;
 // CONSTRUCTORS
 Baan::Baan() {
     simTime = 0.0166;
-    Vmax = 16.6;
-    vertraagfac = 0.4;
-    Amax = 1.44;
-    Bmax = 4.61;
-    fmin = 4;
-    lengte = 0;
-    vmax = vertraagfac*Vmax;
     isThis = this;
 }
 bool Baan::properlyInit(){
@@ -31,11 +26,6 @@ double Baan::getSimTime(){
     return simTime;
 }
 
-double Baan::getVmax(){
-    REQUIRE(this->properlyInit(), "Not properly initialized");
-    ENSURE(Vmax >= 0, "Vmax is negatief");
-    return Vmax;
-}
 
 const string &Baan::getNaam(){
     REQUIRE(this->properlyInit(), "Not properly initialized");
@@ -49,11 +39,6 @@ const vector<Voertuig*> &Baan::getVoertuigen(){
     return Voertuigen;
 }
 
-double Baan::getVertraagfac() {
-    REQUIRE(this->properlyInit(), "Not properly initialized");
-    ENSURE(vertraagfac >= 0, "Vertraagfactor is negatief");
-    return vertraagfac;
-}
 
 int Baan::getLichtSize() {
     REQUIRE(this->properlyInit(), "Not properly initialized");
@@ -90,11 +75,6 @@ void Baan::setSimTime(double siTime) {
     ENSURE(this->getSimTime() == siTime, "Failed assertion");
 }
 
-void Baan::setVmax(double kvmax) {
-    REQUIRE(this->properlyInit(), "Not properly initialized");
-    Vmax = kvmax;
-    ENSURE(this->getVmax() == kvmax, "Failed assertion");
-}
 
 void Baan::setLengte(int length) {
     REQUIRE(this->properlyInit(), "Not properly initialized");
@@ -102,11 +82,6 @@ void Baan::setLengte(int length) {
     ENSURE(this->getLengte() == length, "Failed assertion");
 }
 
-void Baan::setVertraagfac(double vertragfac) {
-    REQUIRE(this->properlyInit(), "Not properly initialized");
-    Baan::vertraagfac = vertragfac;
-    ENSURE(this->getVertraagfac() == vertragfac, "Failed assertion");
-}
 
 void Baan::setVerkeerslicht(VerkeersLicht* licht) {
     REQUIRE(this->properlyInit(), "Not properly initialized");
@@ -148,6 +123,10 @@ void Baan::Versnelling() {
     REQUIRE(this->properlyInit(), "Not properly initialized");
     pos = Verkeerslichten[0]->getPositie();
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; i++) {
+        if (Voertuigen[i]->getPositie() > this->lengte){
+            Voertuigen.erase(Voertuigen.begin());
+            continue;
+        }
         if(i==0){
             Voertuigen[i]->berekenVersnelling(Verkeerslichten,NULL);
         }

@@ -13,6 +13,7 @@ using namespace std;
 class VerkeerSituatie{
 private:
     vector<Baan*> Banen; //Aantal banen bijhouden
+    int simulatie;
     int Tijdstip;
     VerkeerSituatie *isThis;
 public:
