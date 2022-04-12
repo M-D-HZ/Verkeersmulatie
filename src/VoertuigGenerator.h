@@ -5,6 +5,7 @@
 #include "iostream"
 #include "map"
 #include "vector"
+#include "Voertuig.h"
 
 using namespace std;
 
@@ -13,7 +14,8 @@ private:
     string baan;
     int frequentie;
 public:
-
+    VoertuigGenerator();
+    Voertuig* NewVoertuig(const string &b, double lengte);
 };
 
 #endif //UNTITLED_VOERTUIGGENERATOR_H

@@ -7,6 +7,7 @@
 #include "vector"
 #include "Baan.h"
 #include "../tinyxml/tinyxml.h"
+#include "VoertuigGenerator.h"
 using namespace std;
 
 
@@ -16,6 +17,7 @@ private:
     int simulatie;
     int Tijdstip;
     VerkeerSituatie *isThis;
+    VoertuigGenerator generator;
 public:
     VerkeerSituatie();
     bool properlyInitialized();

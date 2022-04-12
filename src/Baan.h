@@ -7,7 +7,9 @@
 #include "map"
 #include "vector"
 
+
 using namespace std;
+class VoertuigGenerator;
 class VerkeersLicht;
 class Voertuig;// Predeclaring classes before use
 class Baan{
@@ -16,12 +18,6 @@ private:
     string naam;
     int lengte;
     double simTime;
-    double Vmax;
-    double vmax;
-    double vertraagfac;
-    double Amax;
-    double Bmax;
-    int fmin;
     vector<VerkeersLicht*> Verkeerslichten;
     vector<Voertuig*> Voertuigen;
     int pos;
@@ -44,7 +40,7 @@ public:
     double getVertraagfac();
     void setVertraagfac(double vertraagfac);
     const vector<VerkeersLicht*> &getVerkeerslichten();
-    const vector<Voertuig*> &getVoertuigen();
+    vector<Voertuig*> getVoertuigen();
     void setVerkeerslicht(VerkeersLicht* licht);
     void setVoertuig(Voertuig* motor);
     // ADDED FUNCTIONS

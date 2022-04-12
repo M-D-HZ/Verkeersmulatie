@@ -33,7 +33,7 @@ const string &Baan::getNaam(){
     return naam;
 }
 
-const vector<Voertuig*> &Baan::getVoertuigen(){
+vector<Voertuig*> Baan::getVoertuigen(){
     REQUIRE(this->properlyInit(), "Not properly initialized");
     ENSURE(!Voertuigen.empty(), "er zijn geen voertuigen");
     return Voertuigen;

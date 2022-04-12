@@ -157,6 +157,13 @@ void VerkeerSituatie::start(){
             Banen[i]->Snelheid();
             Banen[i]->Versnelling();
             simulatie +=1;
+            if(simulatie==141){
+                continue;
+            }
+            if(simulatie%500==0 && simulatie < 1000){
+                Banen[i]->setVoertuig(generator.NewVoertuig(Banen[i]->getNaam(),4));
+                cout<<"TOEGEVOEGD"<<endl<<endl<<endl;
+            }
         }
         ENSURE(Banen[i]->getVoertuigen().empty(),"There shouldn't be any car left");
     }
