@@ -20,6 +20,11 @@
         <baan positie="500">Middelheimlaan</baan>
         <baan positie="500">Beukenlaan</baan>
     </KRUISPUNT>
+    <VERKEERSLICHT>
+        <baan>Middelheimlaan</baan>
+        <positie>500</positie>
+        <cyclus>20</cyclus>
+    </VERKEERSLICHT>
     <BUSHALTE>
         <baan>Middelheimlaan</baan>
         <positie>250</positie>
@@ -32,22 +37,27 @@
     </VOERTUIGGENERATOR>
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
-        <positie>20</positie>
-        <type>bus</type>
+        <frequentie>5</frequentie>
+        <type>auto</type>
     </VOERTUIG>
-    <VOERTUIG>
-        <baan>Middelheimlaan</baan>
-        <positie>40</positie>
-        <type>brandweerwagen</type>
-    </VOERTUIG>
-    <VOERTUIG>
-        <baan>Middelheimlaan</baan>
-        <positie>60</positie>
-        <type>ziekenwagen</type>
-    </VOERTUIG>
-    <VOERTUIG>
-        <baan>Middelheimlaan</baan>
-        <positie>80</positie>
-        <type>politiecombi</type>
-    </VOERTUIG>
+<!--    <VOERTUIG>-->
+<!--        <baan>Middelheimlaan</baan>-->
+<!--        <positie>20</positie>-->
+<!--        <type>bus</type>-->
+<!--    </VOERTUIG>-->
+<!--    <VOERTUIG>-->
+<!--        <baan>Middelheimlaan</baan>-->
+<!--        <positie>40</positie>-->
+<!--        <type>brandweerwagen</type>-->
+<!--    </VOERTUIG>-->
+<!--    <VOERTUIG>-->
+<!--        <baan>Middelheimlaan</baan>-->
+<!--        <positie>60</positie>-->
+<!--        <type>ziekenwagen</type>-->
+<!--    </VOERTUIG>-->
+<!--    <VOERTUIG>-->
+<!--        <baan>Middelheimlaan</baan>-->
+<!--        <positie>80</positie>-->
+<!--        <type>politiecombi</type>-->
+<!--    </VOERTUIG>-->
 </ROOT>

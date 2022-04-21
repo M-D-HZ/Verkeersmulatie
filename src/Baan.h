@@ -7,9 +7,10 @@
 #include "map"
 #include "vector"
 #include "Bushalte.h"
-
+#include "Kruispunt.h"
 
 using namespace std;
+
 class VoertuigGenerator;
 class VerkeersLicht;
 class Voertuig;// Predeclaring classes before use
@@ -22,7 +23,7 @@ private:
     vector<VerkeersLicht*> Verkeerslichten;
     vector<Voertuig*> Voertuigen;
     vector<Bushalte*> Bushaltes;
-    vector<pair<Baan*,int> > Kruispunten;
+    vector<Kruispunt*> Kruispunten;
     int pos;
 
 public:
@@ -38,16 +39,12 @@ public:
     int getLichtSize();
     int getVoertuigSize();
     void setSimTime(double simTime);
-    double getVmax();
-    void setVmax(double vmax);
-    double getVertraagfac();
-    void setVertraagfac(double vertraagfac);
     const vector<VerkeersLicht*> &getVerkeerslichten();
     vector<Voertuig*> getVoertuigen();
     void setVerkeerslicht(VerkeersLicht* licht);
     void setVoertuig(Voertuig* motor);
     void setBushalte(Bushalte* halte);
-    void setKruispunt(Baan* kruis, int pos);
+    void setKruispunt(Kruispunt* kruising);
     // ADDED FUNCTIONS
     void PrintVoertuigen();
     void Snelheid();

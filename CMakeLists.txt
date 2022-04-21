@@ -22,6 +22,7 @@ set(RELEASE_SOURCE_FILES
         src/Baan.cpp src/Baan.h
         src/ReadFile.cpp src/ReadFile.h
         src/VerkeerSituatie.cpp src/VerkeerSituatie.h
+        src/Kruispunt.cpp src/Kruispunt.h
         src/main.cpp
         tinyxml/tinystr.h tinyxml/tinyxml.h tinyxml/tinystr.cpp tinyxml/tinyxml.cpp tinyxml/tinyxmlerror.cpp
         tinyxml/tinyxmlparser.cpp)

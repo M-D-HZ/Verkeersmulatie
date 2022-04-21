@@ -50,17 +50,17 @@ void VerkeerSituatie::read(const char *fileName) {
     }
 
     for (TiXmlElement *elem = root->FirstChildElement(); elem != NULL; elem = elem->NextSiblingElement()) {
-        TiXmlElement* lopo = root->FirstChildElement();
         string elemName = elem->Value();
         if (elemName == "BAAN") {
             Baan* baan = new Baan();
-            for (TiXmlElement* elemto = lopo->FirstChildElement(); elemto != NULL; elemto = elemto->NextSiblingElement()) {
-                string elemNameto = elemto->Value();
+            for (TiXmlElement* lompo = elem->FirstChildElement(); lompo != NULL; lompo = lompo->NextSiblingElement()) {
+                string elemNameto = lompo->Value();
                 if (elemNameto == "naam") {
-                    baan->setNaam(elemto->GetText());
+                    string even  = lompo->GetText();
+                    baan->setNaam(lompo->GetText());
                 }
                 else if (elemNameto == "lengte") {
-                    baan->setLengte(getal(elemto->GetText()));
+                    baan->setLengte(getal(lompo->GetText()));
                     this->Banen.push_back(baan);
                     ENSURE(!this->Banen.empty(),"There have added new road");
                 }
@@ -100,13 +100,6 @@ void VerkeerSituatie::read(const char *fileName) {
                 }
                 if (elemNameto == "positie") {
                     TruckSan->setPositie(getal(elemto->GetText()));
-                    for (unsigned int i = 0; i < unsigned(this->Banen.size()); ++i) {
-                        if (this->Banen[i]->getNaam() == TruckSan->getBaan()) {
-                            int ev = this->Banen[i]->getVoertuigSize();
-                            this->Banen[i]->setVoertuig(TruckSan);
-                            ENSURE((unsigned(this->Banen[i]->getVoertuigSize()) == unsigned (ev +1)),"You have added new car");
-                        }
-                    }
                 }
                 if (elemNameto == "type"){
                     TruckSan->setType(elemto->GetText());
@@ -141,10 +134,25 @@ void VerkeerSituatie::read(const char *fileName) {
             }
         }
         else if (elemName == "KRUISPUNT"){
-             vector<pair<Baan*,int> > test;
+            Kruispunt* kruising = new Kruispunt();
+            int index = 1;
             for (TiXmlElement *elemto = elem->FirstChildElement(); elemto != NULL; elemto = elemto->NextSiblingElement()) {
                 string elemNameto = elemto->Value();
                 string r = elemto->GetText();
+                for (unsigned int i = 0; i < unsigned(this->Banen.size()); i++){
+                    if (index == 1 && elemto->GetText() == Banen[i]->getNaam()){
+                        kruising->setPunt1(make_pair(Banen[i],getal(elemto->Attribute("positie"))));
+                        index++;
+                    }
+                    else if (index == 2 && elemto->GetText() == Banen[i]->getNaam()){
+                        kruising->setPunt2(make_pair(Banen[i], getal(elemto->Attribute("positie"))));
+                    }
+                }
+            }
+            for (unsigned int i = 0; i < unsigned(this->Banen.size()) ; ++i) {
+                if (Banen[i] == kruising->getPunt1().first or Banen[i] == kruising->getPunt2().first){
+                    Banen[i]->setKruispunt(kruising);
+                }
             }
         }
     }
@@ -185,11 +193,6 @@ bool VerkeerSituatie::isleeg(){
     return true;
 }
 
-
-
-
-
-
 void VerkeerSituatie::start(){
     REQUIRE(this->properlyInitialized(),"It is not initialised");
     simulatie = 0;
@@ -200,19 +203,16 @@ void VerkeerSituatie::start(){
     while (!leeg){
         for (unsigned int i = 0; i < Banen.size(); ++i) {
             cout << "---> Tijd: "<< simulatie << endl;
-            if (simulatie == 2062){
-                cout << "oopsiewoopsiemadeappopsie" << endl;
-            }
             if(!Banen[i]->getVoertuigen().empty()){
                 Banen[i]->ReduceCycle();
                 Banen[i]->PrintVoertuigen();
                 Banen[i]->Snelheid();
                 Banen[i]->Versnelling();
             }
-            if(simulatie%500==0 && simulatie < 1000){
-                Banen[i]->setVoertuig(generator.NewVoertuig(Banen[i]->getNaam(),4));
-                cout<<"TOEGEVOEGD"<<endl<<endl<<endl;
-            }
+//            if(simulatie%500==0 && simulatie < 1000){
+//                Banen[i]->setVoertuig(generator.NewVoertuig(Banen[i]->getNaam(),4));
+//                cout<<"TOEGEVOEGD"<<endl<<endl<<endl;
+//            }
         }
         leeg = isleeg();
         simulatie +=1;

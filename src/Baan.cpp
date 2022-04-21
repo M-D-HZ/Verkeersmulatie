@@ -1,7 +1,6 @@
-
-
 // Groep: Student 1: Anass Hamzaoui - s0210294
 //        Student 2: X Tenzin Choezin - s0202163
+#include <fstream>
 #include "Baan.h"
 #include "Voertuig.h"
 #include "VerkeersLicht.h"
@@ -111,11 +110,12 @@ void Baan::setVoertuig(Voertuig* motor) {
 void Baan::PrintVoertuigen() {
     REQUIRE(this->properlyInit(), "Not properly initialized");
     REQUIRE(!this->Voertuigen.empty(), "Nothing to print");
+//    std::ofstream outfile("Verkeer.txt");
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; ++i) {
         cout << "Baan: "<< Voertuigen[i]->getBaan() << endl;
         cout << "---> Positie: "<< Voertuigen[i]->getPositie() << endl;
         cout << "---> Snelheid: " << Voertuigen[i]->getSnelheid() << endl;
-        cout << "---> Versnelling: " <<  Voertuigen[i]->getVersnelling()<<endl;
+        cout << "---> Versnelling: " <<  Voertuigen[i]->getVersnelling() << endl;
     }
 }
 
@@ -161,8 +161,8 @@ void Baan::setBushalte(Bushalte* halte) {
     Bushaltes.push_back(halte);
 }
 
-void Baan::setKruispunt(Baan *kruis, int Position) {
-    Kruispunten.push_back(make_pair(kruis,Position));
+void Baan::setKruispunt(Kruispunt* kruising) {
+    Kruispunten.push_back(kruising);
 }
 
 
