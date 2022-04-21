@@ -6,6 +6,7 @@
 #include "iostream"
 #include "map"
 #include "vector"
+#include "Bushalte.h"
 
 
 using namespace std;
@@ -20,6 +21,8 @@ private:
     double simTime;
     vector<VerkeersLicht*> Verkeerslichten;
     vector<Voertuig*> Voertuigen;
+    vector<Bushalte*> Bushaltes;
+    vector<pair<Baan*,int> > Kruispunten;
     int pos;
 
 public:
@@ -43,6 +46,8 @@ public:
     vector<Voertuig*> getVoertuigen();
     void setVerkeerslicht(VerkeersLicht* licht);
     void setVoertuig(Voertuig* motor);
+    void setBushalte(Bushalte* halte);
+    void setKruispunt(Baan* kruis, int pos);
     // ADDED FUNCTIONS
     void PrintVoertuigen();
     void Snelheid();

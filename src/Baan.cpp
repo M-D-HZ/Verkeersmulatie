@@ -157,6 +157,14 @@ void Baan::ReduceCycle() {
     }
 }
 
+void Baan::setBushalte(Bushalte* halte) {
+    Bushaltes.push_back(halte);
+}
+
+void Baan::setKruispunt(Baan *kruis, int Position) {
+    Kruispunten.push_back(make_pair(kruis,Position));
+}
+
 
 // GARBAGE FUNCTIONS WE MIGHT USE AGAIN
 //void Baan::BerekenVersnellingRood(double LightPos){

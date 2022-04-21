@@ -15,6 +15,7 @@ using namespace std;
 class Voertuig{
 private:
     string baan;
+    string type;
     double positie;
     int lengte;
     double snelheid;
@@ -28,8 +29,12 @@ private:
     int fmin;
 public:
     // CONSTRUCTORS
-    Voertuig(int lengte);
+    Voertuig();
     // GETTERS AND SETTERS
+    const string &getType() const;
+
+    void setType(const string &type);
+
     double getVersnelling();
     void setVersnelling(double versnelling);
     int getLengte();

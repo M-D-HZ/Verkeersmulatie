@@ -6,16 +6,16 @@
 #include "VerkeersLicht.h"
 
 // CONSTRUCTORS
-Voertuig::Voertuig(int lengte) : lengte(lengte) {
+Voertuig::Voertuig() {
     snelheid = 0;
     versnelling = 0;
     positie = 0;
     isThis = this;
-    Vmax = 16.6;
+    Vmax = 0;
+    Amax = 0;
+    Bmax = 0;
+    fmin = 0;
     vertraagfac = 0.4;
-    Amax = 1.44;
-    Bmax = 4.61;
-    fmin = 4;
     vmax = vertraagfac*Vmax;
 }
 bool Voertuig::properlyInitialized(){
@@ -130,4 +130,47 @@ void Voertuig::BerekenSnelheid(double time){
     else{
         positie = positie + (snelheid*time) + (versnelling * (pow(time,2)/2));
     }
+}
+
+const string &Voertuig::getType() const {
+    return type;
+}
+
+void Voertuig::setType(const string &typ) {
+    if (typ == "auto"){
+        lengte = 4;
+        Vmax = 16.6;
+        Amax = 1.44;
+        Bmax = 4.61;
+        fmin = 4;
+    }
+    else if (typ == "bus"){
+        lengte = 12;
+        Vmax = 11.4;
+        Amax = 1.22;
+        Bmax = 4.29;
+        fmin = 12;
+    }
+    else if (typ == "brandweerwagen"){
+        lengte = 10;
+        Vmax = 14.6;
+        Amax = 1.33;
+        Bmax = 4.56;
+        fmin = 10;
+    }
+    else if (typ == "ziekenwagen"){
+        lengte = 8;
+        Vmax = 15.5;
+        Amax = 1.44;
+        Bmax = 4.47;
+        fmin = 8;
+    }
+    else if (typ == "politiecombi"){
+        lengte = 6;
+        Vmax = 17.2;
+        Amax = 1.55;
+        Bmax = 4.92;
+        fmin = 6;
+    }
+    Voertuig::type = typ;
 }

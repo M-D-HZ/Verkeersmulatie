@@ -2,6 +2,7 @@
 //        Student 2: X Tenzin Choezin - s0202163
 #include "VerkeerSituatie.h"
 #include "Baan.h"
+#include "Bushalte.h"
 #include "VerkeersLicht.h"
 #include "Voertuig.h"
 #include <string>
@@ -65,7 +66,7 @@ void VerkeerSituatie::read(const char *fileName) {
                 }
             }
         }
-        if (elemName == "VERKEERSLICHT") {
+        else if (elemName == "VERKEERSLICHT") {
             VerkeersLicht* Licht = new VerkeersLicht();
             for (TiXmlElement *elemto = elem->FirstChildElement(); elemto != NULL; elemto = elemto->NextSiblingElement()) {
                 string elemNameto = elemto->Value();
@@ -91,7 +92,7 @@ void VerkeerSituatie::read(const char *fileName) {
             }
         }
         else if (elemName == "VOERTUIG") {
-            Voertuig* TruckSan = new Voertuig(4);
+            Voertuig* TruckSan = new Voertuig();
             for (TiXmlElement *elemto = elem->FirstChildElement(); elemto != NULL; elemto = elemto->NextSiblingElement()) {
                 string elemNameto = elemto->Value();
                 if (elemNameto == "baan") {
@@ -99,7 +100,6 @@ void VerkeerSituatie::read(const char *fileName) {
                 }
                 if (elemNameto == "positie") {
                     TruckSan->setPositie(getal(elemto->GetText()));
-                    TruckSan->setLengte(4);
                     for (unsigned int i = 0; i < unsigned(this->Banen.size()); ++i) {
                         if (this->Banen[i]->getNaam() == TruckSan->getBaan()) {
                             int ev = this->Banen[i]->getVoertuigSize();
@@ -108,6 +108,43 @@ void VerkeerSituatie::read(const char *fileName) {
                         }
                     }
                 }
+                if (elemNameto == "type"){
+                    TruckSan->setType(elemto->GetText());
+                    for (unsigned int i = 0; i < unsigned(this->Banen.size()); ++i) {
+                        if (this->Banen[i]->getNaam() == TruckSan->getBaan()) {
+                            int ev = this->Banen[i]->getVoertuigSize();
+                            this->Banen[i]->setVoertuig(TruckSan);
+                            ENSURE((unsigned(this->Banen[i]->getVoertuigSize()) == unsigned (ev +1)),"You have added new car");
+                        }
+                    }
+                }
+            }
+        }
+        else if(elemName == "BUSHALTE"){
+            Bushalte* halte = new Bushalte();
+            for (TiXmlElement *elemto = elem->FirstChildElement(); elemto != NULL; elemto = elemto->NextSiblingElement()) {
+                string elemNameto = elemto->Value();
+                if (elemNameto == "baan") {
+                    halte->setBaan(elemto->GetText());
+                }
+                if (elemNameto == "positie") {
+                    halte->setPositie(getal(elemto->GetText()));
+                }
+                if (elemNameto == "wachttijd"){
+                    halte->setWachttijd(getal(elemto->GetText()));
+                    for (unsigned int i = 0; i < unsigned(this->Banen.size()); ++i) {
+                        if (this->Banen[i]->getNaam() == halte->getBaan()) {
+                            this->Banen[i]->setBushalte(halte);
+                        }
+                    }
+                }
+            }
+        }
+        else if (elemName == "KRUISPUNT"){
+             vector<pair<Baan*,int> > test;
+            for (TiXmlElement *elemto = elem->FirstChildElement(); elemto != NULL; elemto = elemto->NextSiblingElement()) {
+                string elemNameto = elemto->Value();
+                string r = elemto->GetText();
             }
         }
     }
@@ -144,7 +181,8 @@ void VerkeerSituatie::UpdateBanen(vector<Baan*> ways) {
 void VerkeerSituatie::start(){
     REQUIRE(this->properlyInitialized(),"It is not initialised");
     simulatie = 0;
-    this->read("Banen.xml"); // 8:30
+    //this->read("Banen.xml"); // spec 1.0
+    this->read("Banen1.xml"); // spec 2.0
     Tijdstip = -1; // Zet hier hoeveel tijdstippen je wilt simuleren
     for (unsigned int i = 0; i < Banen.size(); ++i) {
         while (!Banen[i]->getVoertuigen().empty() && simulatie != Tijdstip){
