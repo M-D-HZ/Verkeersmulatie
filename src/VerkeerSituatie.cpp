@@ -177,6 +177,18 @@ void VerkeerSituatie::UpdateBanen(vector<Baan*> ways) {
     Banen = ways;
 //    ENSURE(this->GetBanen() == ways,"Baan has to change to the new vector of Baan");
 }
+bool VerkeerSituatie::isleeg(){
+    for (unsigned int i = 0; i < Banen.size(); ++i) {
+        if(!Banen[i]->getVoertuigen().empty())
+            return false;
+    }
+    return true;
+}
+
+
+
+
+
 
 void VerkeerSituatie::start(){
     REQUIRE(this->properlyInitialized(),"It is not initialised");
@@ -184,27 +196,28 @@ void VerkeerSituatie::start(){
     //this->read("Banen.xml"); // spec 1.0
     this->read("Banen1.xml"); // spec 2.0
     Tijdstip = -1; // Zet hier hoeveel tijdstippen je wilt simuleren
-    for (unsigned int i = 0; i < Banen.size(); ++i) {
-        while (!Banen[i]->getVoertuigen().empty() && simulatie != Tijdstip){
+    bool leeg = false;
+    while (!leeg){
+        for (unsigned int i = 0; i < Banen.size(); ++i) {
             cout << "---> Tijd: "<< simulatie << endl;
             if (simulatie == 2062){
                 cout << "oopsiewoopsiemadeappopsie" << endl;
             }
-            Banen[i]->ReduceCycle();
-            Banen[i]->PrintVoertuigen();
-            Banen[i]->Snelheid();
-            Banen[i]->Versnelling();
-            simulatie +=1;
-            if(simulatie==141){
-                continue;
+            if(!Banen[i]->getVoertuigen().empty()){
+                Banen[i]->ReduceCycle();
+                Banen[i]->PrintVoertuigen();
+                Banen[i]->Snelheid();
+                Banen[i]->Versnelling();
             }
             if(simulatie%500==0 && simulatie < 1000){
                 Banen[i]->setVoertuig(generator.NewVoertuig(Banen[i]->getNaam(),4));
                 cout<<"TOEGEVOEGD"<<endl<<endl<<endl;
             }
         }
-        ENSURE(Banen[i]->getVoertuigen().empty(),"There shouldn't be any car left");
+        leeg = isleeg();
+        simulatie +=1;
     }
+    ENSURE(leeg = false,"There shouldn't be any car left");
 }
 
 

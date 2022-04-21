@@ -35,7 +35,7 @@ const string &Baan::getNaam(){
 
 vector<Voertuig*> Baan::getVoertuigen(){
     REQUIRE(this->properlyInit(), "Not properly initialized");
-    ENSURE(!Voertuigen.empty(), "er zijn geen voertuigen");
+//ENSURE(!Voertuigen.empty(), "er zijn geen voertuigen");
     return Voertuigen;
 }
 
