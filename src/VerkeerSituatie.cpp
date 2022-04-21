@@ -7,6 +7,7 @@
 #include "Voertuig.h"
 #include <string>
 #include <sstream>
+#include <fstream>
 #include "DesignByContract.h"
 
 
@@ -156,7 +157,20 @@ void VerkeerSituatie::read(const char *fileName) {
             }
         }
         else if(elemName == "VOERTUIGGENERATOR"){
-
+            VoertuigGenerator* gen = new VoertuigGenerator();
+            for (TiXmlElement *elemto = elem->FirstChildElement(); elemto != NULL; elemto = elemto->NextSiblingElement()) {
+                string elemNameto = elemto->Value();
+                if (elemNameto == "baan"){
+                    gen->setBaan(elemto->GetText());
+                }
+                else if(elemNameto == "frequentie"){
+                    gen->setFrequentie(getal(elemto->GetText()));
+                }
+                else if(elemNameto == "type"){
+                    gen->setType(elemto->GetText());
+                    generator = gen;
+                }
+            }
         }
     }
 }
@@ -202,13 +216,13 @@ void VerkeerSituatie::start(){
     //this->read("Banen.xml"); // spec 1.0
     this->read("Banen1.xml"); // spec 2.0
     Tijdstip = -1; // Zet hier hoeveel tijdstippen je wilt simuleren
+    std::ofstream outfile("Verkeer.txt");
     bool leeg = false;
     while (!leeg){
         for (unsigned int i = 0; i < Banen.size(); ++i) {
-            cout << "---> Tijd: "<< simulatie << endl;
             if(!Banen[i]->getVoertuigen().empty()){
                 Banen[i]->ReduceCycle();
-                Banen[i]->PrintVoertuigen();
+                Banen[i]->PrintVoertuigen(simulatie);
                 Banen[i]->Snelheid();
                 Banen[i]->Versnelling();
             }

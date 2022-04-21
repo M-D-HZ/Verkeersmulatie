@@ -13,4 +13,28 @@ Voertuig* VoertuigGenerator::NewVoertuig() {
     return New;
 }
 
+const string &VoertuigGenerator::getBaan() const {
+    return baan;
+}
+
+void VoertuigGenerator::setBaan(const string &b) {
+    VoertuigGenerator::baan = b;
+}
+
+const string &VoertuigGenerator::getType() const {
+    return type;
+}
+
+void VoertuigGenerator::setType(const string &ty) {
+    VoertuigGenerator::type = ty;
+}
+
+int VoertuigGenerator::getFrequentie() const {
+    return frequentie;
+}
+
+void VoertuigGenerator::setFrequentie(int freq) {
+    VoertuigGenerator::frequentie = freq;
+}
+
 

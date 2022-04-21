@@ -17,6 +17,18 @@ private:
 public:
     VoertuigGenerator();
     Voertuig* NewVoertuig();
+
+    const string &getBaan() const;
+
+    void setBaan(const string &b);
+
+    const string &getType() const;
+
+    void setType(const string &ty);
+
+    int getFrequentie() const;
+
+    void setFrequentie(int freq);
 };
 
 #endif //UNTITLED_VOERTUIGGENERATOR_H

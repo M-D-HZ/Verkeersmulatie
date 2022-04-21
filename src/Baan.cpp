@@ -107,16 +107,19 @@ void Baan::setVoertuig(Voertuig* motor) {
 }
 
 // ADDED FUNCTIONS
-void Baan::PrintVoertuigen() {
+void Baan::PrintVoertuigen(int Tijd) {
     REQUIRE(this->properlyInit(), "Not properly initialized");
     REQUIRE(!this->Voertuigen.empty(), "Nothing to print");
-//    std::ofstream outfile("Verkeer.txt");
+    ofstream outfile;
+    outfile.open("Verkeer.txt");
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; ++i) {
-        cout << "Baan: "<< Voertuigen[i]->getBaan() << endl;
-        cout << "---> Positie: "<< Voertuigen[i]->getPositie() << endl;
-        cout << "---> Snelheid: " << Voertuigen[i]->getSnelheid() << endl;
-        cout << "---> Versnelling: " <<  Voertuigen[i]->getVersnelling() << endl;
+        outfile << "---> Tijd: " << Tijd << endl;
+        outfile << "Baan: " << Voertuigen[i]->getBaan() << endl;
+        outfile << "---> Positie: " << Voertuigen[i]->getPositie() << endl;
+        outfile << "---> Snelheid: " << Voertuigen[i]->getSnelheid() << endl;
+        outfile << "---> Versnelling: " <<  Voertuigen[i]->getVersnelling() << endl;
     }
+    outfile.close();
 }
 
 void Baan::Versnelling() {

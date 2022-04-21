@@ -17,7 +17,7 @@ private:
     int simulatie;
     int Tijdstip;
     VerkeerSituatie *isThis;
-    VoertuigGenerator generator;
+    VoertuigGenerator* generator;
     vector<Voertuig*> voertuigen;
 public:
     VerkeerSituatie();
