@@ -174,3 +174,7 @@ void Voertuig::setType(const string &typ) {
     }
     Voertuig::type = typ;
 }
+
+string Voertuig::getType() {
+    return this->type;
+}

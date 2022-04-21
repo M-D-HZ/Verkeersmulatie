@@ -15,15 +15,15 @@ public:
 
     const string &getBaan() const;
 
-    void setBaan(const string &baan);
+    void setBaan(const string &b);
 
     int getPositie() const;
 
-    void setPositie(int positie);
+    void setPositie(int pos);
 
     int getWachttijd() const;
 
-    void setWachttijd(int wachttijd);
+    void setWachttijd(int wacht);
 };
 
 

@@ -5,11 +5,11 @@
 
 VoertuigGenerator::VoertuigGenerator() {}
 
-Voertuig* VoertuigGenerator::NewVoertuig(const string &b, double lengte) {
+Voertuig* VoertuigGenerator::NewVoertuig(const string &name) {
     Voertuig* New = new Voertuig();
-    New->setBaan(b);
+    New->setBaan(name);
     New->setPositie(0);
-    New->setLengte(lengte);
+    New->setType(type);
     return New;
 }
 

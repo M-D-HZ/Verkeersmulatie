@@ -12,10 +12,11 @@ using namespace std;
 class VoertuigGenerator{
 private:
     string baan;
+    string type;
     int frequentie;
 public:
     VoertuigGenerator();
-    Voertuig* NewVoertuig(const string &b, double lengte);
+    Voertuig* NewVoertuig(const string &b);
 };
 
 #endif //UNTITLED_VOERTUIGGENERATOR_H
