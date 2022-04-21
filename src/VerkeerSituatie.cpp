@@ -155,6 +155,9 @@ void VerkeerSituatie::read(const char *fileName) {
                 }
             }
         }
+        else if(elemName == "VOERTUIGGENERATOR"){
+
+        }
     }
 }
 

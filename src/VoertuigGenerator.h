@@ -16,7 +16,7 @@ private:
     int frequentie;
 public:
     VoertuigGenerator();
-    Voertuig* NewVoertuig(const string &b);
+    Voertuig* NewVoertuig();
 };
 
 #endif //UNTITLED_VOERTUIGGENERATOR_H
