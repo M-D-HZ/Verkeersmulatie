@@ -46,7 +46,9 @@ public:
     void setBushalte(Bushalte* halte);
     void setKruispunt(Kruispunt* kruising);
     // ADDED FUNCTIONS
+    void Sorteren();
     void PrintVoertuigen(int Tijd);
+    void MakeOutput(int Tijd);
     void Snelheid();
     void Versnelling();
     void ReduceCycle();

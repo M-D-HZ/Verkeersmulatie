@@ -27,6 +27,8 @@ public:
     void UpdateBanen(vector<Baan*> baan);
     void addBaan(Baan weg);
     vector<Baan*> GetBanen();
+    void GrafischImp();
+    void Sorteren();
     void read(const char *fileName);
     int getal(string const &Getal);
     void start();

@@ -13,7 +13,7 @@ using namespace std;
 class VerkeersLicht{
 private:
     string baan;
-    double positie;
+    int positie;
     int cyclus;
     int Clone;
     string Color;
@@ -24,7 +24,7 @@ public:
 
     //GETTERS
     const string &getBaan();
-    double getPositie();
+    int getPositie();
     int getCyclus() ;
     string getColor();
 
@@ -32,7 +32,7 @@ public:
 
     //SETTERS
     void setBaan(const string &baan);
-    void setPositie(double positie);
+    void setPositie(int positie);
     void setClone(int clone);
     void setCyclus(int cyclus);
     //

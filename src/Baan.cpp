@@ -1,6 +1,7 @@
 // Groep: Student 1: Anass Hamzaoui - s0210294
 //        Student 2: X Tenzin Choezin - s0202163
 #include <fstream>
+#include <sstream>
 #include "Baan.h"
 #include "Voertuig.h"
 #include "VerkeersLicht.h"
@@ -107,19 +108,38 @@ void Baan::setVoertuig(Voertuig* motor) {
 }
 
 // ADDED FUNCTIONS
+string intTostring(int integer){
+    stringstream ss;
+    string str;
+    ss << integer;
+    ss >> str;
+    return str;
+}
+
 void Baan::PrintVoertuigen(int Tijd) {
     REQUIRE(this->properlyInit(), "Not properly initialized");
     REQUIRE(!this->Voertuigen.empty(), "Nothing to print");
-    ofstream outfile;
-    outfile.open("Verkeer.txt");
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; ++i) {
-        outfile << "---> Tijd: " << Tijd << endl;
-        outfile << "Baan: " << Voertuigen[i]->getBaan() << endl;
-        outfile << "---> Positie: " << Voertuigen[i]->getPositie() << endl;
-        outfile << "---> Snelheid: " << Voertuigen[i]->getSnelheid() << endl;
-        outfile << "---> Versnelling: " <<  Voertuigen[i]->getVersnelling() << endl;
+        cout << "Tijd: " << Tijd << endl;
+        cout << "---> Baan: " << Voertuigen[i]->getBaan() << endl;
+        cout << "---> Positie: " << Voertuigen[i]->getPositie() << endl;
+        cout << "---> Snelheid: " << Voertuigen[i]->getSnelheid() << endl;
+        cout << "---> Versnelling: " <<  Voertuigen[i]->getVersnelling() << endl;
     }
-    outfile.close();
+}
+
+void Baan::Sorteren(){
+    for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; i++) {
+        if (Voertuigen[i+1] == NULL){
+            break;
+        }
+        else if (Voertuigen[i]->getPositie() < Voertuigen[i+1]->getPositie()){
+            Voertuig* switchs = Voertuigen[i];
+            Voertuigen[i] = Voertuigen[i+1];
+            Voertuigen[i+1] = switchs;
+            Sorteren();
+        }
+    }
 }
 
 void Baan::Versnelling() {
@@ -166,6 +186,87 @@ void Baan::setBushalte(Bushalte* halte) {
 
 void Baan::setKruispunt(Kruispunt* kruising) {
     Kruispunten.push_back(kruising);
+}
+
+void Baan::MakeOutput(int Tijd) {
+    fstream outfile;
+    outfile.open("Verkeer.txt",ios::ate|ios::app);
+
+    outfile << "Tijd: " << Tijd << endl;
+    outfile << naam << '\t' << " | ";
+    for (unsigned int i = 0; i < unsigned(lengte); i++) {
+        for (unsigned int j = 0; j < unsigned(Voertuigen.size()); j++) {
+            if (Voertuigen[j]->getPositie() > i && Voertuigen[j]->getPositie() < i+Voertuigen[j]->getLengte() && Voertuigen[j]->getType() == "auto"){
+                for (unsigned int k = 0; k < unsigned(Voertuigen[j]->getLengte()); k++) {
+                    outfile << "A";
+                    i++;
+                }
+            }
+            else if (Voertuigen[j]->getPositie() > i && Voertuigen[j]->getPositie() < i+Voertuigen[j]->getLengte() && Voertuigen[j]->getType() == "bus"){
+                for (unsigned int k = 0; k < unsigned(Voertuigen[j]->getLengte()); k++) {
+                    outfile << "B";
+                    i++;
+                }
+            }
+            else if (Voertuigen[j]->getPositie() > i && Voertuigen[j]->getPositie() < i+Voertuigen[j]->getLengte() && Voertuigen[j]->getType() == "brandweerwagen"){
+                for (unsigned int k = 0; k < unsigned(Voertuigen[j]->getLengte()); k++) {
+                    outfile << "W";
+                    i++;
+                }
+            }
+            else if (Voertuigen[j]->getPositie() > i && Voertuigen[j]->getPositie() < i+Voertuigen[j]->getLengte() && Voertuigen[j]->getType() == "ziekenwagen"){
+                for (unsigned int k = 0; k < unsigned(Voertuigen[j]->getLengte()); k++) {
+                    outfile << "Z";
+                    i++;
+                }
+            }
+            else if (Voertuigen[j]->getPositie() > i && Voertuigen[j]->getPositie() < i+Voertuigen[j]->getLengte() && Voertuigen[j]->getType() == "politiecombi"){
+                for (unsigned int k = 0; k < unsigned(Voertuigen[j]->getLengte()); k++) {
+                    outfile << "P";
+                    i++;
+                }
+            }
+            else{
+                outfile << "=";
+            }
+        }
+    }
+    outfile << endl;
+//    outfile << " > verkeerslichten" << '\t' << " | ";
+//    for (unsigned int i = 0; i < unsigned(lengte); i++) {
+//        for (unsigned int j = 0; j < unsigned(Verkeerslichten.size()); j++) {
+//            if (i+15 == Verkeerslichten[j]->getPositie()){
+//                outfile << "|";
+//                i++;
+//            }
+//            else if (Verkeerslichten[j]->getPositie() == i && Verkeerslichten[j]->getColor() == "red"){
+//                outfile << "R";
+//                i++;
+//            }
+//            else if (Verkeerslichten[j]->getPositie() == i && Verkeerslichten[j]->getColor() == "green"){
+//                outfile << "G";
+//                i++;
+//            }
+//            else{
+//                outfile << " ";
+//            }
+//        }
+//    }
+//    outfile << endl;
+//    outfile << " > bushaltes" << '\t' << " | ";
+//    for (int j = 0; j < unsigned(lengte); j++) {
+//        for (unsigned int i = 0; i < unsigned(Bushaltes.size()); i++) {
+//            if (Bushaltes[i]->getPositie() == j) {
+//                outfile << "B";
+//                j++;
+//            }
+//            else{
+//                outfile << " ";
+//            }
+//        }
+//    }
+//    outfile << endl;
+    outfile.close();
 }
 
 

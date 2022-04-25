@@ -6,7 +6,7 @@
 
 VerkeersLicht::VerkeersLicht() {
     Color = "green";
-    positie = 0.0;
+    positie = 0;
     cyclus = 0;
     Clone = 0;
     isThis = this;
@@ -27,7 +27,7 @@ string VerkeersLicht::getColor(){
     return Color;
 }
 
-double VerkeersLicht::getPositie(){
+int VerkeersLicht::getPositie(){
     REQUIRE(this->properlyInitialized(), "Not properly initialized");
     ENSURE(positie > 0, "Positie kan niet negatief zijn");
     return positie;
@@ -45,7 +45,7 @@ void VerkeersLicht::setBaan(const string &bane) {
     ENSURE(this->getBaan() == bane, "Failed Assertion");
 }
 
-void VerkeersLicht::setPositie(double position) {
+void VerkeersLicht::setPositie(int position) {
     REQUIRE(this->properlyInitialized(), "Not properly initialized");
     VerkeersLicht::positie = position;
     ENSURE(this->getPositie() == position, "Failed Assertion");

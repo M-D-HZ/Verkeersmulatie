@@ -92,7 +92,10 @@ VerkeersLicht* Voertuig::dichtBijzijndeLicht(vector<VerkeersLicht*> lichten){
 
 void Voertuig::berekenVersnelling(vector<VerkeersLicht*> Verkeerslichten,Voertuig* even) {
     VerkeersLicht *licht = dichtBijzijndeLicht(Verkeerslichten);
-    double lichtafstand = licht->getPositie() - this->getPositie();
+    double lichtafstand = 0;
+    if (licht != NULL){
+        lichtafstand = licht->getPositie() - this->getPositie();
+    }
     if(licht->getColor()=="red" && lichtafstand<7.5 && even != NULL && even->getPositie()>licht->getPositie() && licht !=NULL ){
         return;
     }

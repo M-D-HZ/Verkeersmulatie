@@ -22,7 +22,7 @@
     </KRUISPUNT>
     <VERKEERSLICHT>
         <baan>Middelheimlaan</baan>
-        <positie>500</positie>
+        <positie>480</positie>
         <cyclus>20</cyclus>
     </VERKEERSLICHT>
     <BUSHALTE>
@@ -37,7 +37,7 @@
     </VOERTUIGGENERATOR>
     <VOERTUIG>
         <baan>Middelheimlaan</baan>
-        <frequentie>5</frequentie>
+        <positie>5</positie>
         <type>auto</type>
     </VOERTUIG>
     <VOERTUIG>

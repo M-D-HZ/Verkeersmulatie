@@ -209,6 +209,11 @@ bool VerkeerSituatie::isleeg(){
     }
     return true;
 }
+void VerkeerSituatie::Sorteren(){
+    for(unsigned int i = 0; i < unsigned (Banen.size());i++){
+        Banen[i]->Sorteren();
+    }
+}
 
 void VerkeerSituatie::start(){
     REQUIRE(this->properlyInitialized(),"It is not initialised");
@@ -221,9 +226,12 @@ void VerkeerSituatie::start(){
     while (!leeg){
         for (unsigned int i = 0; i < Banen.size(); ++i) {
             if(!Banen[i]->getVoertuigen().empty()){
+                if (simulatie == 2116){
+                    cout << "no" << endl;
+                }
                 Banen[i]->ReduceCycle();
                 Banen[i]->PrintVoertuigen(simulatie);
-                Banen[i]->Snelheid();
+                GrafischImp();
                 Banen[i]->Versnelling();
             }
 //            if(simulatie%500==0 && simulatie < 1000){
@@ -235,6 +243,12 @@ void VerkeerSituatie::start(){
         simulatie +=1;
     }
     ENSURE(leeg = false,"There shouldn't be any car left");
+}
+
+void VerkeerSituatie::GrafischImp() {
+    for (unsigned int i = 0; i < Banen.size(); i++) {
+        Banen[i]->MakeOutput(simulatie);
+    }
 }
 
 
