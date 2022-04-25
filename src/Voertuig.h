@@ -32,10 +32,8 @@ public:
     Voertuig();
     // GETTERS AND SETTERS
     const string &getType() const;
-
     void setType(const string &type);
     string getType();
-
     double getVersnelling();
     void setVersnelling(double versnelling);
     int getLengte();
@@ -49,6 +47,7 @@ public:
     void berekenVersnelling(vector<VerkeersLicht*> Verkeerslichten,Voertuig* even);
     VerkeersLicht* dichtBijzijndeLicht(vector<VerkeersLicht*> Verkeerslichten);
     void BerekenSnelheid(double time);
+    void berekenBus(double pos);
 
     //Properly Initialized
     bool properlyInitialized();

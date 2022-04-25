@@ -120,6 +120,15 @@ void Voertuig::berekenVersnelling(vector<VerkeersLicht*> Verkeerslichten,Voertui
         this->setVersnelling(Amax * (1 - pow(snelheid /Vmax, 4) - pow(delta, 2)));
     }
 }
+void Voertuig::berekenBus(double pos){
+    if(pos<=15){
+        double hel = -((Bmax * snelheid)/vmax);
+        this->setVersnelling(hel);
+    }
+    else if(pos<=50){
+        this->setVersnelling(Amax * (1-pow(snelheid/vmax,4)));
+    }
+}
 
 void Voertuig::BerekenSnelheid(double time){
     if((snelheid + (versnelling * time))<0){

@@ -19,6 +19,7 @@ private:
     Baan *isThis;
     string naam;
     int lengte;
+    VoertuigGenerator* Generator;
     double simTime;
     vector<VerkeersLicht*> Verkeerslichten;
     vector<Voertuig*> Voertuigen;
@@ -45,6 +46,8 @@ public:
     void setVoertuig(Voertuig* motor);
     void setBushalte(Bushalte* halte);
     void setKruispunt(Kruispunt* kruising);
+    VoertuigGenerator* getVoertuigGenerator();
+    void setVoertuiggenerator(VoertuigGenerator* generator);
     // ADDED FUNCTIONS
     void Sorteren();
     void PrintVoertuigen(int Tijd);

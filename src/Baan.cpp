@@ -25,6 +25,12 @@ double Baan::getSimTime(){
     ENSURE(simTime >= 0, "Simulation time is negatief");
     return simTime;
 }
+void Baan::setVoertuiggenerator(VoertuigGenerator* generator){
+    Generator = generator;
+}
+VoertuigGenerator* Baan::getVoertuigGenerator(){
+    return Generator;
+}
 
 
 const string &Baan::getNaam(){
@@ -141,14 +147,43 @@ void Baan::Sorteren(){
         }
     }
 }
+Bushalte* halte(vector<Bushalte*> halte, Voertuig* autos){
+    for (unsigned int i = 0; i < unsigned(halte.size()) ; i++){
+        if(autos->getPositie()<halte[i]->getPositie()){
+            return halte[i];
+        }
+    }
+    return NULL;
+}
+
 
 void Baan::Versnelling() {
     REQUIRE(this->properlyInit(), "Not properly initialized");
+    int wacht = -1;
     pos = Verkeerslichten[0]->getPositie();
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; i++) {
+        if(Voertuigen[i]->getType() =="Bus" && wacht != -1){
+            wacht -=1;
+            if(wacht ==0){
+                wacht =-1;
+            }
+            continue;
+        }
         if (Voertuigen[i]->getPositie() > this->lengte){
             Voertuigen.erase(Voertuigen.begin());
             continue;
+        }
+
+        Bushalte* stop = halte(Bushaltes,Voertuigen[i]);
+        if(Voertuigen[i]->getType() =="Bus" && Voertuigen[i]->getSnelheid()==0){
+            wacht = stop->getWachttijd();
+            continue;
+        }
+        if(Voertuigen[i]->getType() =="Bus" && stop != NULL && wacht ==-1){
+            if(stop->getPositie()-Voertuigen[i]->getPositie()<=15 || stop->getPositie()-Voertuigen[i]->getPositie()<=50){
+                Voertuigen[i]->berekenBus(stop->getPositie()-Voertuigen[i]->getPositie());
+                continue;
+            }
         }
         if(i==0){
             Voertuigen[i]->berekenVersnelling(Verkeerslichten,NULL);

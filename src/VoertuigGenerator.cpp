@@ -5,12 +5,15 @@
 
 VoertuigGenerator::VoertuigGenerator() {}
 
-Voertuig* VoertuigGenerator::NewVoertuig() {
-    Voertuig* New = new Voertuig();
-    New->setBaan(baan);
-    New->setPositie(0);
-    New->setType(type);
-    return New;
+Voertuig* VoertuigGenerator::NewVoertuig(int tijd, bool leeg) {
+    if(tijd%frequentie ==0 && tijd !=0 || leeg ==true){
+        Voertuig* New = new Voertuig();
+        New->setBaan(baan);
+        New->setPositie(0);
+        New->setType(type);
+        return New;
+    }
+    return NULL;
 }
 
 const string &VoertuigGenerator::getBaan() const {

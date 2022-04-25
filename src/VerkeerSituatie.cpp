@@ -171,6 +171,11 @@ void VerkeerSituatie::read(const char *fileName) {
                     generator = gen;
                 }
             }
+            for (unsigned int i = 0; i < unsigned(this->Banen.size()) ; ++i) {
+                if (Banen[i]->getNaam() == gen->getBaan()){
+                    Banen[i]->setVoertuiggenerator(gen);
+                }
+            }
         }
     }
 }
@@ -225,19 +230,24 @@ void VerkeerSituatie::start(){
     bool leeg = false;
     while (!leeg){
         for (unsigned int i = 0; i < Banen.size(); ++i) {
-            if(!Banen[i]->getVoertuigen().empty()){
-                if (simulatie == 2116){
-                    cout << "no" << endl;
-                }
-                Banen[i]->ReduceCycle();
-                Banen[i]->PrintVoertuigen(simulatie);
-                GrafischImp();
-                Banen[i]->Versnelling();
+            Banen[i]->ReduceCycle();
+            Banen[i]->PrintVoertuigen(simulatie);
+            Banen[i]->Snelheid();
+            Banen[i]->Versnelling();
+
+            if(Banen[i]->getVoertuigGenerator()->NewVoertuig(simulatie,false) !=NULL){
+                Banen[i]->getVoertuigen().push_back(Banen[i]->getVoertuigGenerator()->NewVoertuig(simulatie,false));
             }
-//            if(simulatie%500==0 && simulatie < 1000){
-//                Banen[i]->setVoertuig(generator.NewVoertuig(Banen[i]->getNaam()));
-//                cout<<"TOEGEVOEGD"<<endl<<endl<<endl;
-//            }
+            else{
+                for (unsigned int k = 0; k < Banen[i]->getVoertuigen().size(); ++k){
+                    if(Banen[i]->getVoertuigen()[k]->getPositie()<15){
+                        break;
+                    }
+                    else{
+                        Banen[i]->getVoertuigen().push_back(Banen[i]->getVoertuigGenerator()->NewVoertuig(simulatie,true));
+                    }
+                }
+            }
         }
         leeg = isleeg();
         simulatie +=1;

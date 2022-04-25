@@ -16,7 +16,7 @@ private:
     int frequentie;
 public:
     VoertuigGenerator();
-    Voertuig* NewVoertuig();
+    Voertuig* NewVoertuig(int tijd, bool leeg);
 
     const string &getBaan() const;
 
@@ -29,6 +29,7 @@ public:
     int getFrequentie() const;
 
     void setFrequentie(int freq);
+
 };
 
 #endif //UNTITLED_VOERTUIGGENERATOR_H

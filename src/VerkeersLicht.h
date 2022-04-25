@@ -38,7 +38,7 @@ public:
     //
     void reduce();
     bool properlyInitialized();
-    bool RedLight(vector<VerkeersLicht*> Verkeerslichten);
+
 
     //KLEUR VERANDERING
     void switchColor();
