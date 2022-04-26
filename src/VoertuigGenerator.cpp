@@ -6,7 +6,7 @@
 VoertuigGenerator::VoertuigGenerator() {}
 
 Voertuig* VoertuigGenerator::NewVoertuig(int tijd, bool leeg) {
-    if(tijd%frequentie ==0 && tijd !=0 || leeg ==true){
+    if((tijd%this->frequentie ==0 && tijd !=0) || leeg ==true){
         Voertuig* New = new Voertuig();
         New->setBaan(baan);
         New->setPositie(0);

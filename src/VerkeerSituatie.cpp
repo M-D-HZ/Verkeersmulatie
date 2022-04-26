@@ -175,6 +175,9 @@ void VerkeerSituatie::read(const char *fileName) {
                 if (Banen[i]->getNaam() == gen->getBaan()){
                     Banen[i]->setVoertuiggenerator(gen);
                 }
+                else{
+                    Banen[i]->setVoertuiggenerator(NULL);
+                }
             }
         }
     }
@@ -230,11 +233,16 @@ void VerkeerSituatie::start(){
     bool leeg = false;
     while (!leeg){
         for (unsigned int i = 0; i < Banen.size(); ++i) {
+            if(simulatie==2116){
+                simulatie=2116;
+            }
             Banen[i]->ReduceCycle();
             Banen[i]->PrintVoertuigen(simulatie);
             Banen[i]->Snelheid();
             Banen[i]->Versnelling();
-
+            if(Banen[i]->getVoertuigGenerator()==NULL){
+                continue;
+            }
             if(Banen[i]->getVoertuigGenerator()->NewVoertuig(simulatie,false) !=NULL){
                 Banen[i]->getVoertuigen().push_back(Banen[i]->getVoertuigGenerator()->NewVoertuig(simulatie,false));
             }

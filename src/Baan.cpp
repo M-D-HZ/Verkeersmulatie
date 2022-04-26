@@ -58,7 +58,7 @@ int Baan::getVoertuigSize(){
 
 const vector<VerkeersLicht*> &Baan::getVerkeerslichten() {
     REQUIRE(this->properlyInit(), "Not properly initialized");
-    ENSURE(!Verkeerslichten.empty(), "Er zijn geen verkeerslichten");
+//    ENSURE(!Verkeerslichten.empty(), "Er zijn geen verkeerslichten");
     return Verkeerslichten;
 }
 
@@ -123,6 +123,9 @@ string intTostring(int integer){
 }
 
 void Baan::PrintVoertuigen(int Tijd) {
+    if(this->Voertuigen.empty()){
+        return;
+    }
     REQUIRE(this->properlyInit(), "Not properly initialized");
     REQUIRE(!this->Voertuigen.empty(), "Nothing to print");
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; ++i) {
@@ -158,9 +161,11 @@ Bushalte* halte(vector<Bushalte*> halte, Voertuig* autos){
 
 
 void Baan::Versnelling() {
+    if(this->Voertuigen.empty()){
+        return;
+    }
     REQUIRE(this->properlyInit(), "Not properly initialized");
     int wacht = -1;
-    pos = Verkeerslichten[0]->getPositie();
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; i++) {
         if(Voertuigen[i]->getType() =="Bus" && wacht != -1){
             wacht -=1;
@@ -195,6 +200,9 @@ void Baan::Versnelling() {
 }
 
 void Baan::Snelheid() {
+    if(this->Voertuigen.empty()){
+        return;
+    }
     REQUIRE(this->properlyInit(), "Not properly initialized");
     REQUIRE(!this->Voertuigen.empty(), "Voertuigen bestaan niet");
     for (unsigned int i = 0; i < unsigned(Voertuigen.size()) ; i++) {
@@ -208,10 +216,15 @@ void Baan::Snelheid() {
 }
 
 void Baan::ReduceCycle() {
-    REQUIRE(this->properlyInit(), "Not properly initialized");
-    REQUIRE(!this->Verkeerslichten.empty(), "Verkeerslichten bestaan niet");
-    for (unsigned int i = 0; i < Verkeerslichten.size(); i++) {
-        Verkeerslichten[i]->reduce();
+    if(this->Verkeerslichten.empty()){
+        return;
+    }
+    else{
+        REQUIRE(this->properlyInit(), "Not properly initialized");
+        REQUIRE(!this->Verkeerslichten.empty(), "Verkeerslichten bestaan niet");
+        for (unsigned int i = 0; i < Verkeerslichten.size(); i++) {
+            Verkeerslichten[i]->reduce();
+        }
     }
 }
 
