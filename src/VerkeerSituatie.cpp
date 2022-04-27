@@ -171,14 +171,14 @@ void VerkeerSituatie::read(const char *fileName) {
                     generator = gen;
                 }
             }
-            for (unsigned int i = 0; i < unsigned(this->Banen.size()) ; ++i) {
-                if (Banen[i]->getNaam() == gen->getBaan()){
-                    Banen[i]->setVoertuiggenerator(gen);
-                }
-                else{
-                    Banen[i]->setVoertuiggenerator(NULL);
-                }
-            }
+//            for (unsigned int i = 0; i < unsigned(this->Banen.size()) ; ++i) {
+//                if (Banen[i]->getNaam() == gen->getBaan()){
+//                    Banen[i]->setVoertuiggenerator(gen);
+//                }
+//                else{
+//                    Banen[i]->setVoertuiggenerator(NULL);
+//                }
+//            }
         }
     }
 }
@@ -228,42 +228,25 @@ void VerkeerSituatie::start(){
     simulatie = 0;
     //this->read("Banen.xml"); // spec 1.0
     this->read("Banen1.xml"); // spec 2.0
+    Sorteren();
     Tijdstip = -1; // Zet hier hoeveel tijdstippen je wilt simuleren
     std::ofstream outfile("Verkeer.txt");
     bool leeg = false;
-    while (!leeg){
+    while (!leeg) {
         for (unsigned int i = 0; i < Banen.size(); ++i) {
-            if(simulatie==2116){
-                simulatie=2116;
-            }
             Banen[i]->ReduceCycle();
             Banen[i]->PrintVoertuigen(simulatie);
+            GrafischImp();
             Banen[i]->Snelheid();
             Banen[i]->Versnelling();
-            if(Banen[i]->getVoertuigGenerator()==NULL){
-                continue;
-            }
-            if(Banen[i]->getVoertuigGenerator()->NewVoertuig(simulatie,false) !=NULL){
-                Banen[i]->getVoertuigen().push_back(Banen[i]->getVoertuigGenerator()->NewVoertuig(simulatie,false));
-            }
-            else{
-                for (unsigned int k = 0; k < Banen[i]->getVoertuigen().size(); ++k){
-                    if(Banen[i]->getVoertuigen()[k]->getPositie()<15){
-                        break;
-                    }
-                    else{
-                        Banen[i]->getVoertuigen().push_back(Banen[i]->getVoertuigGenerator()->NewVoertuig(simulatie,true));
-                    }
-                }
-            }
+            leeg = isleeg();
+            simulatie += 1;
         }
-        leeg = isleeg();
-        simulatie +=1;
     }
     ENSURE(leeg = false,"There shouldn't be any car left");
 }
 
-void VerkeerSituatie::GrafischImp() {
+void VerkeerSituatie::GrafischImp(){
     for (unsigned int i = 0; i < Banen.size(); i++) {
         Banen[i]->MakeOutput(simulatie);
     }

@@ -4,22 +4,24 @@
         <naam>Middelheimlaan</naam>
         <lengte>500</lengte>
     </BAAN>
-    <BAAN>
-        <naam>Floralienlaan</naam>
-        <lengte>750</lengte>
-    </BAAN>
-    <BAAN>
-        <naam>Beukenlaan</naam>
-        <lengte>1000</lengte>
-    </BAAN>
-    <KRUISPUNT>
-        <baan positie="250">Middelheimlaan</baan>
-        <baan positie="500">Floralienlaan</baan>
-    </KRUISPUNT>
-    <KRUISPUNT>
-        <baan positie="500">Middelheimlaan</baan>
-        <baan positie="500">Beukenlaan</baan>
-    </KRUISPUNT>
+<!--    <BAAN>-->
+<!--        <naam>Floralienlaan</naam>-->
+<!--        <lengte>750</lengte>-->
+<!--    </BAAN>-->
+<!--    <KRUISPUNT>-->
+<!--        <baan positie="250">Middelheimlaan</baan>-->
+<!--        <baan positie="500">Floralienlaan</baan>-->
+<!--    </KRUISPUNT>-->
+<!--    <VERKEERSLICHT>-->
+<!--        <baan>Floralienlaan</baan>-->
+<!--        <positie>480</positie>-->
+<!--        <cyclus>20</cyclus>-->
+<!--    </VERKEERSLICHT>-->
+<!--    <BUSHALTE>-->
+<!--        <baan>Floralienlaan</baan>-->
+<!--        <positie>250</positie>-->
+<!--        <wachttijd>20</wachttijd>-->
+<!--    </BUSHALTE>-->
     <VERKEERSLICHT>
         <baan>Middelheimlaan</baan>
         <positie>480</positie>
@@ -60,4 +62,14 @@
         <positie>80</positie>
         <type>politiecombi</type>
     </VOERTUIG>
+<!--    <VOERTUIG>-->
+<!--        <baan>Floralienlaan</baan>-->
+<!--        <positie>5</positie>-->
+<!--        <type>auto</type>-->
+<!--    </VOERTUIG>-->
+<!--    <VOERTUIG>-->
+<!--        <baan>Floralienlaan</baan>-->
+<!--        <positie>5</positie>-->
+<!--        <type>auto</type>-->
+<!--    </VOERTUIG>-->
 </ROOT>
