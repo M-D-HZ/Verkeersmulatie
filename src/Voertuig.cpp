@@ -103,7 +103,7 @@ void Voertuig::berekenVersnelling(vector<VerkeersLicht*> Verkeerslichten,Voertui
         double hel = -((Bmax * snelheid)/vmax);
         this->setVersnelling(hel);
     }
-    else if(licht->getColor()=="red" && lichtafstand<50 && even != NULL && even->getPositie()>licht->getPositie() && licht !=NULL){
+    else if(even != NULL && licht !=NULL && licht->getColor()=="red" && lichtafstand <50 && even->getPositie()>licht->getPositie()){
         this->setVersnelling(Amax * (1-pow(snelheid/vmax,4)));
     }
     else if(even==NULL){
